@@ -15,6 +15,7 @@ export function createResource(data) {
   })
 }
 
+// TODO 芋艿：使用表单提交，而不是 query string
 export function updateResource(data) {
   return request({
     url: '/management-api/resource/update',

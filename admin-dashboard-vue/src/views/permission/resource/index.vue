@@ -178,13 +178,31 @@ export default {
       // 重置表单
       this.resetForm("resourceForm")
       // 设置修改的表单
-      this.resourceForm = row;
+      this.resourceForm = {
+        ...row,
+				children: undefined // TODO 芋艿：有什么办法剔除非表单的字段
+			};
 		},
 		// 表单提交
     handleFormSubmit() {
       this.$refs["resourceForm"].validate(valid => {
         if (!valid) {
           return
+				}
+        // 若权限类型为菜单时，进行 route 的校验，避免后续拼接出来的路由无法跳转
+				if (this.resourceForm.type === ResourceTypeEnum.MENU) {
+				  // 如果是外链，则不进行校验
+					const route = this.resourceForm.route
+				  if (route.indexOf('http://') === -1 || route.indexOf('https://') === -1) {
+				    // 父权限为根节点，route 必须以 / 开头
+						if (this.resourceForm.pid === 0 && route.charAt(0) !== '/') {
+              this.messageSuccess("前端必须以 / 开头")
+							return
+						} else if (this.resourceForm.pid !== 0 && route.charAt(0) === '/') {
+              this.messageSuccess("前端不能以 / 开头")
+							return
+            }
+					}
 				}
         // 设置加载中，避免重复点击
         this.resourceFormLoading = true

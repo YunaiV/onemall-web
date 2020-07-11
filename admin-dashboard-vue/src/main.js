@@ -41,6 +41,14 @@ Vue.prototype.messageSuccess = function(message) {
   })
 }
 
+Vue.prototype.messageError = function(message) {
+  this.$message({
+    type: "error",
+    showClose: true,
+    message: message,
+  })
+}
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
