@@ -1,30 +1,31 @@
-import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { login, logout, getInfo } from '@/api/passport/passport'
+import { getAccessToken, setAccessToken, getRefreshToken, setRefreshToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
 const state = {
-  token: getToken(),
+  // 管理员信息
   name: '',
   avatar: '',
-  introduction: '',
-  roles: []
+  // 认证信息
+  accessToken: getAccessToken(),
+  refreshToken: getRefreshToken(),
 }
 
 const mutations = {
-  SET_TOKEN: (state, token) => {
-    state.token = token
-  },
-  SET_INTRODUCTION: (state, introduction) => {
-    state.introduction = introduction
-  },
+  // 管理员信息
   SET_NAME: (state, name) => {
     state.name = name
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   },
-  SET_ROLES: (state, roles) => {
-    state.roles = roles
+  // 认证信息
+  SET_ACCESS_TOKEN: (state, accessToken) => {
+    debugger
+    state.accessToken = accessToken
+  },
+  SET_REFRESH_TOKEN: (state, refreshToken) => {
+    state.refreshToken = refreshToken
   }
 }
 
@@ -38,9 +39,12 @@ const actions = {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
         // 设置访问令牌到 Store 中
-        commit('SET_TOKEN', data.authorization.accessToken)
+        commit('SET_ACCESS_TOKEN', data.accessToken)
+        commit('SET_REFRESH_TOKEN', data.refreshToken)
         // 设置访问令牌到 Cookie 中
-        setToken(data.authorization.accessToken)
+        setAccessToken(data.accessToken)
+        setRefreshToken(data.refreshToken)
+        // 返回
         resolve()
       }).catch(error => {
         reject(error)
@@ -53,18 +57,10 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo().then(response => {
         const { data } = response
-
-        const { name } = data
-
-        // roles must be a non-empty array
-        // if (!roles || roles.length <= 0) {
-        //   reject('getInfo: roles must be a non-null array!')
-        // }
-
-        commit('SET_ROLES', ['admin'])
+        const { name, avatar } = data
         commit('SET_NAME', name)
-        // commit('SET_AVATAR', avatar)
-        // commit('SET_INTRODUCTION', introduction)
+        commit('SET_AVATAR', avatar)
+        // 返回
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -96,31 +92,11 @@ const actions = {
   resetToken({ commit }) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
-      commit('SET_ROLES', [])
       removeToken()
       resolve()
     })
   },
 
-  // dynamically modify permissions
-  async changeRoles({ commit, dispatch }, role) {
-    const token = role + '-token'
-
-    commit('SET_TOKEN', token)
-    setToken(token)
-
-    const { roles } = await dispatch('getInfo')
-
-    resetRouter()
-
-    // generate accessible routes map based on roles
-    const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
-    // dynamically add accessible routes
-    router.addRoutes(accessRoutes)
-
-    // reset visited views and cached views
-    dispatch('tagsView/delAllViews', null, { root: true })
-  }
 }
 
 export default {

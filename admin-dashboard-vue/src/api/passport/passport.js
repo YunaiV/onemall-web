@@ -8,13 +8,6 @@ export function login(data) {
   })
 }
 
-export function getInfo() {
-  return request({
-    url: '/management-api/admin/info',
-    method: 'get'
-  })
-}
-
 export function logout() {
   return request({
     url: '/vue-element-admin/user/logout',
@@ -22,16 +15,23 @@ export function logout() {
   })
 }
 
+export function getInfo() {
+  return request({
+    url: '/management-api/passport/info',
+    method: 'get'
+  })
+}
+
 export function treeAdminMenu() {
   return request({
-    url: '/management-api/resource/tree-admin-menu',
+    url: '/management-api/passport/tree-admin-menu',
     method: 'get'
   })
 }
 
 export function listAdminPermission() {
   return request({
-    url: '/management-api/resource/list-admin-permission',
+    url: '/management-api/passport/list-admin-permission',
     method: 'get'
   })
 }

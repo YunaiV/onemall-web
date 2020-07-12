@@ -1,4 +1,4 @@
-import { treeAdminMenu, listAdminPermission } from '@/api/user'
+import { treeAdminMenu, listAdminPermission } from '@/api/passport/passport'
 import { constantRoutes } from '@/router'
 import { generateMenuRoutes } from '@/router/index'
 

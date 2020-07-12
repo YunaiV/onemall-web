@@ -5,12 +5,15 @@ const getters = {
   visitedViews: state => state.tagsView.visitedViews,
   cachedViews: state => state.tagsView.cachedViews,
   token: state => state.user.token,
+  errorLogs: state => state.errorLog.logs,
+  // 管理员信息
   avatar: state => state.user.avatar,
   name: state => state.user.name,
-  introduction: state => state.user.introduction,
-  roles: state => state.user.roles,
-  permission_routes: state => state.permission.routes,
-  errorLogs: state => state.errorLog.logs,
+  // 认证信息
+  accessToken: state => state.user.accessToken,
+  refreshToken: state => state.user.refreshToken,
+  // 权限信息
   permissions: state => state.permission.permissions,
+  permission_routes: state => state.permission.routes
 }
 export default getters
