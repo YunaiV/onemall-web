@@ -1,10 +1,11 @@
 <template>
 	<div class="app-container">
-		<el-form :inline="true">
-			<el-form-item>
+		<!-- 工具栏 -->
+		<el-row :gutter="10" class="mb8">
+			<el-col :span="1.5">
 				<el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAddClick">新增</el-button>
-			</el-form-item>
-		</el-form>
+			</el-col>
+		</el-row>
 
 		<!-- 资源树 -->
 		<el-table v-loading="resourceTreeLoading" :data="resourceTree" row-key="id">
@@ -152,12 +153,17 @@ export default {
     getResourceTree() {
       this.resourceTreeLoading = true
       treeResource().then(response => {
-        this.resourceTree = response.data
+        // 取消加载中
         this.resourceTreeLoading = false
+				// 设置数据
+        this.resourceTree = response.data
         this.resourceFormResourceTreeSelect = [{
           id: 0,
           label: '根节点'
 				}, ...this.generateResourceFormResourceTreeSelect(this.resourceTree)]
+      }).catch(() => {
+        // 取消加载中
+        this.resourceTreeLoading = false
       })
     },
 		// 添加弹窗
@@ -212,14 +218,12 @@ export default {
           updateResource(this.resourceForm).then(response => {
             // 取消加载中
             this.resourceFormLoading = false
-            if (response.code === 0) {
-              // 提示成功
-              this.messageSuccess("修改成功")
-              // 取消加载中
-              this.resourceFormVisible = false
-              // 重新加载资源树
-              this.getResourceTree()
-            }
+            // 提示成功
+            this.messageSuccess("修改成功")
+            // 取消加载中
+            this.resourceFormVisible = false
+            // 重新加载资源树
+            this.getResourceTree()
           }).catch(() => {
             // 取消加载中
             this.resourceFormLoading = false
@@ -229,14 +233,12 @@ export default {
           createResource(this.resourceForm).then(response => {
             // 取消加载中
             this.resourceFormLoading = false
-            if (response.code === 0) {
-              // 提示成功
-              this.messageSuccess("新增成功")
-              // 取消加载中
-              this.resourceFormVisible = false
-							// 重新加载资源树
-              this.getResourceTree()
-            }
+            // 提示成功
+            this.messageSuccess("新增成功")
+            // 取消加载中
+            this.resourceFormVisible = false
+            // 重新加载资源树
+            this.getResourceTree()
           }).catch(() => {
 						// 取消加载中
             this.resourceFormLoading = false
@@ -256,12 +258,10 @@ export default {
         cancelButtonText: "取消",
       }).then(() => {
         deleteResource(row.id).then(response => {
-          if (response.code === 0) {
-            // 提示成功
-            this.messageSuccess("删除成功")
-            // 重新加载资源树
-            this.getResourceTree()
-          }
+          // 提示成功
+          this.messageSuccess("删除成功")
+          // 重新加载资源树
+          this.getResourceTree()
         })
       })
     },

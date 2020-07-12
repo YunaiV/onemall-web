@@ -1,217 +1,226 @@
 <template>
+	<div class="app-container">
+		<!--搜索栏 -->
+		<el-form :model="roleListQuery" ref="roleListQueryForm" :inline="true">
+			<el-form-item label="角色名称" prop="name">
+				<el-input v-model="roleListQuery.name" placeholder="请输入角色名称" clearable size="small" style="width: 240px"/>
+			</el-form-item>
+			<el-form-item>
+				<el-button type="primary" icon="el-icon-search" size="mini" @click="roleListQueryFormSubmit">搜索</el-button>
+				<el-button icon="el-icon-refresh" size="mini" @click="roleListQueryFormReset">重置</el-button>
+			</el-form-item>
+		</el-form>
 
-	<!-- 角色列表 -->
-	<el-table v-loading="roleListLoading" :data="roleList" row-key="id">
-		<el-table-column prop="name" label="名称" width="200" :show-overflow-tooltip="true"/>
-		<el-table-column prop="code" label="编码" width="100"/>
-		<!-- TODO 芋艿：接入数据字典 -->
-		<el-table-column prop="type" label="类型"width="50"/>
-		<el-table-column label="创建时间" align="center">
-			<template slot-scope="scope">
-				<span>{{ scope.row.createTime | parseTime('{y}-{m}-{d}') }}</span>
-			</template>
-		</el-table-column>
-		<el-table-column label="操作">
-			<template slot-scope="scope">
-				<el-button type="text" size="mini" icon="el-icon-plus" @click="handleAddClick(scope.row)"
-									 v-if="scope.row.type === ResourceTypeEnum.MENU">新增</el-button>
-				<el-button type="text" size="mini" icon="el-icon-edit" @click="handleUpdateClick(scope.row)">修改</el-button>
-				<el-button type="text" size="mini" icon="el-icon-delete" @click="handleDeleteClick(scope.row)">删除</el-button>
-			</template>
-		</el-table-column>
-	</el-table>
+		<!-- 工具栏 -->
+		<el-row :gutter="10" class="mb8">
+			<el-col :span="1.5">
+				<el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAddClick">新增</el-button>
+			</el-col>
+		</el-row>
 
+		<!-- 角色列表 -->
+		<el-table v-loading="roleListLoading" :data="roleList" row-key="id">
+			<el-table-column prop="name" label="名称" width="200" :show-overflow-tooltip="true"/>
+			<el-table-column prop="code" label="编码" width="200" :show-overflow-tooltip="true"/>
+			<!-- TODO 芋艿：接入数据字典 -->
+			<el-table-column prop="type" label="类型"width="50"/>
+			<el-table-column label="创建时间" align="center">
+				<template slot-scope="scope">
+					<span>{{ scope.row.createTime | parseTime('{y}-{m}-{d}') }}</span>
+				</template>
+			</el-table-column>
+			<el-table-column label="操作">
+				<template slot-scope="scope">
+					<el-button type="text" size="mini" icon="el-icon-edit" @click="handleUpdateClick(scope.row)"
+										 v-if="scope.row.type === RoleTypeEnum.CUSTOM">修改</el-button>
+					<el-button type="text" size="mini" icon="el-icon-delete" @click="handleDeleteClick(scope.row)"
+										 v-if="scope.row.type === RoleTypeEnum.CUSTOM">删除</el-button>
+				</template>
+			</el-table-column>
+		</el-table>
+		<!-- 角色列表的分页 -->
+		<pagination :total="roleListTotal" :page.sync="roleListQuery.pageNo" :limit.sync="roleListQuery.pageSize"
+								v-show="roleListTotal > 0" @pagination="getRoleList"/>
+
+		<!-- 角色添加与修改表单 -->
+		<el-dialog :title="roleFormTitle" :visible.sync="roleFormVisible" width="600px" append-to-body
+							 v-loading="roleFormLoading" element-loading-text="提交中..." element-loading-spinner="el-icon-loading">
+			<el-form ref="roleForm" :model="roleForm" :rules="roleFormRule" label-width="80px">
+				<el-row>
+					<el-col :span="24">
+						<el-form-item label="名称" prop="name">
+							<el-input v-model="roleForm.name" placeholder="请输入名称"/>
+						</el-form-item>
+					</el-col>
+					<el-col :span="24">
+						<el-form-item label="编码" prop="code">
+							<el-input v-model="roleForm.code"/>
+						</el-form-item>
+					</el-col>
+				</el-row>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button type="primary" @click="handleFormSubmit">确 定</el-button>
+				<el-button @click="handleFormCancel">取 消</el-button>
+			</div>
+		</el-dialog>
+	</div>
 </template>
 
 <script>
-// import { treeResource, createResource, updateResource, deleteResource } from '@/api/permission/resource'
+import { pageRole, createRole, updateRole, deleteRole } from '@/api/permission/role'
+
+import Pagination from '@/components/Pagination'
+
+import { RoleTypeEnum } from '@/utils/constants'
 
 export default {
 	name: 'RoleList',
-	data() {
+  components: { Pagination },
+  data() {
 		return {
 			// 角色列表
 			roleList: [],
+			// 角色总数
+      roleListTotal: 0,
 			// 进度条
 			roleListLoading: true,
+			// 查询条件
+			roleListQuery: {
+			  pageNo: 1,
+				pageSize: 10,
+				name: undefined
+			},
 
-			// 资源添加与修改表单
-			resourceForm: {},
+			// 角色添加与修改表单
+			roleForm: {},
 			// 校验规则
-			resourceFormRule: {
-				type: [
-					{ required: true, message: "类型不能为空", trigger: "change" }
-				],
-				pid: [
-					{ required: true, message: "上级权限不能为空", trigger: "blur" }
-				],
+			roleFormRule: {
 				name: [
 					{ required: true, message: "名称不能为空", trigger: "blur" }
-				],
-				sort: [
-					{ required: true, message: "排序不能为空", trigger: "blur" }
-				],
-				route: [
-					{ required: true, message: "前端路由不能为空", trigger: "blur" }
-				],
+				]
 			},
 			// 是否可见
-			resourceFormVisible: false,
+			roleFormVisible: false,
 			// 标题
-			resourceFormTitle: '',
-			// 资源树 TreeSelect 的数据
-			resourceFormResourceTreeSelect: [],
-			resourceFormLoading: false,
+			roleFormTitle: '',
+			roleFormLoading: false,
 
-			// 枚举
-			ResourceTypeEnum: ResourceTypeEnum
+      RoleTypeEnum: RoleTypeEnum
 		}
 	},
 	created() {
-		this.getResourceTree()
+		this.getRoleList()
 	},
 	methods: {
-		// 加载资源树
-		getResourceTree() {
-			this.resourceTreeLoading = true
-			treeResource().then(response => {
-				this.resourceTree = response.data
-				this.resourceTreeLoading = false
-				this.resourceFormResourceTreeSelect = [{
-					id: 0,
-					label: '根节点'
-				}, ...this.generateResourceFormResourceTreeSelect(this.resourceTree)]
-			})
+		// 加载角色列表
+		getRoleList() {
+			this.roleListLoading = true
+      pageRole(this.roleListQuery).then(response => {
+        // 取消加载中
+        this.roleListLoading = false
+				// 设置数据
+        this.roleList = response.data.list
+				this.roleListTotal = response.data.total
+			}).catch(() => {
+        // 取消加载中
+        this.roleListLoading = false
+      })
 		},
 		// 添加弹窗
 		handleAddClick(row) {
-			this.resourceFormVisible = true
-			this.resourceFormTitle = '添加权限'
+			this.roleFormVisible = true
+			this.roleFormTitle = '添加角色'
 			// 重置表单
-			this.resetForm("resourceForm")
-			// 设置 pid，如果有传递的话
-			if (row) {
-				this.resourceForm.pid = row.id
-			}
+			this.resetForm("roleForm")
 		},
 		// 修改弹窗
 		handleUpdateClick(row) {
-			this.resourceFormVisible = true
-			this.resourceFormTitle = '修改权限'
+			this.roleFormVisible = true
+			this.roleFormTitle = '修改角色'
 			// 重置表单
-			this.resetForm("resourceForm")
+			this.resetForm("roleForm")
 			// 设置修改的表单
-			this.resourceForm = {
+			this.roleForm = {
 				...row,
 				children: undefined // TODO 芋艿：有什么办法剔除非表单的字段
-			};
+			}
 		},
 		// 表单提交
 		handleFormSubmit() {
-			this.$refs["resourceForm"].validate(valid => {
+			this.$refs["roleForm"].validate(valid => {
 				if (!valid) {
 					return
 				}
-				// 若权限类型为菜单时，进行 route 的校验，避免后续拼接出来的路由无法跳转
-				if (this.resourceForm.type === ResourceTypeEnum.MENU) {
-					// 如果是外链，则不进行校验
-					const route = this.resourceForm.route
-					if (route.indexOf('http://') === -1 || route.indexOf('https://') === -1) {
-						// 父权限为根节点，route 必须以 / 开头
-						if (this.resourceForm.pid === 0 && route.charAt(0) !== '/') {
-							this.messageSuccess("前端必须以 / 开头")
-							return
-						} else if (this.resourceForm.pid !== 0 && route.charAt(0) === '/') {
-							this.messageSuccess("前端不能以 / 开头")
-							return
-						}
-					}
-				}
 				// 设置加载中，避免重复点击
-				this.resourceFormLoading = true
+				this.roleFormLoading = true
 
 				// 更新
-				if (this.resourceForm.id) {
-					updateResource(this.resourceForm).then(response => {
+				if (this.roleForm.id) {
+					updateRole(this.roleForm).then(response => {
 						// 取消加载中
-						this.resourceFormLoading = false
-						if (response.code === 0) {
-							// 提示成功
-							this.messageSuccess("修改成功")
-							// 取消加载中
-							this.resourceFormVisible = false
-							// 重新加载资源树
-							this.getResourceTree()
-						}
+						this.roleFormLoading = false
+            // 提示成功
+            this.messageSuccess("修改成功")
+            // 取消加载中
+            this.roleFormVisible = false
+            // 重新加载角色列表
+            this.getRoleList()
 					}).catch(() => {
 						// 取消加载中
-						this.resourceFormLoading = false
+						this.roleFormLoading = false
 					})
 					// 新增
 				} else {
-					createResource(this.resourceForm).then(response => {
+					createRole(this.roleForm).then(response => {
 						// 取消加载中
-						this.resourceFormLoading = false
-						if (response.code === 0) {
-							// 提示成功
-							this.messageSuccess("新增成功")
-							// 取消加载中
-							this.resourceFormVisible = false
-							// 重新加载资源树
-							this.getResourceTree()
-						}
+						this.roleFormLoading = false
+            // 提示成功
+            this.messageSuccess("新增成功")
+            // 取消加载中
+            this.roleFormVisible = false
+            // 重新加载角色树
+            this.getRoleList()
 					}).catch(() => {
 						// 取消加载中
-						this.resourceFormLoading = false
+						this.roleFormLoading = false
 					})
 				}
 			})
 		},
 		// 表单取消
 		handleFormCancel() {
-			this.resourceFormVisible = false
+			this.roleFormVisible = false
 		},
 		// 删除弹窗
 		handleDeleteClick(row) {
-			this.$confirm('确认删除名字为"' + row.name + '"的权限?', "提示", {
+			this.$confirm('确认删除名字为"' + row.name + '"的角色?', "提示", {
 				type: "warning",
 				confirmButtonText: "确定",
 				cancelButtonText: "取消",
 			}).then(() => {
-				deleteResource(row.id).then(response => {
-					if (response.code === 0) {
-						// 提示成功
-						this.messageSuccess("删除成功")
-						// 重新加载资源树
-						this.getResourceTree()
-					}
+				deleteRole(row.id).then(response => {
+          // 提示成功
+          this.messageSuccess("删除成功")
+          // 重新加载角色列表
+          this.getRoleList()
 				})
 			})
 		},
-		// 构建 resourceFormResourceTreeSelect 的数据
-		generateResourceFormResourceTreeSelect(tree) {
-			const res = []
-			tree.forEach(node => {
-				// 只有菜单类型的权限，才可以使用
-				if (node.type !== ResourceTypeEnum.MENU) {
-					return
-				}
-				// 创建当前节点
-				const tmp = {
-					id: node.id,
-					label: node.name
-				}
-				res.push(tmp)
-				// 递归子节点
-				if (node.children) {
-					const children = this.generateResourceFormResourceTreeSelect(node.children)
-					if (children && children.length > 0) {
-						tmp.children = children
-					}
-				}
-			})
-			return res
-		}
+		// 搜索表单提交
+    roleListQueryFormSubmit() {
+		  // 重置到第一页
+      this.roleListQuery.pageNo = 1
+      // 加载角色列表
+			this.getRoleList()
+    },
+		// 搜索表单重置
+    roleListQueryFormReset() {
+		  // 重置表单
+      this.resetForm("roleListQueryForm");
+      // 加载角色列表
+      this.getRoleList()
+    }
 	}
 }
 

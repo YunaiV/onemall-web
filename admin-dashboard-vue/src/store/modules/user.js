@@ -21,7 +21,6 @@ const mutations = {
   },
   // 认证信息
   SET_ACCESS_TOKEN: (state, accessToken) => {
-    debugger
     state.accessToken = accessToken
   },
   SET_REFRESH_TOKEN: (state, refreshToken) => {
@@ -72,8 +71,6 @@ const actions = {
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
-        commit('SET_TOKEN', '')
-        commit('SET_ROLES', [])
         removeToken()
         resetRouter()
 
@@ -91,7 +88,8 @@ const actions = {
   // remove token
   resetToken({ commit }) {
     return new Promise(resolve => {
-      commit('SET_TOKEN', '')
+      commit('SET_ACCESS_TOKEN', '')
+      commit('SET_REFRESH_TOKEN', '')
       removeToken()
       resolve()
     })
