@@ -33,6 +33,7 @@
 				<template slot-scope="scope">
 					<el-button type="text" size="mini" icon="el-icon-edit" @click="handleUpdateClick(scope.row)"
 										 v-if="scope.row.type === RoleTypeEnum.CUSTOM">修改</el-button>
+					<el-button type="text" size="mini" icon="el-icon-circle-check" @click="handleAssignRoleResourceClick(scope.row)">分配权限</el-button>
 					<el-button type="text" size="mini" icon="el-icon-delete" @click="handleDeleteClick(scope.row)"
 										 v-if="scope.row.type === RoleTypeEnum.CUSTOM">删除</el-button>
 				</template>
@@ -64,11 +65,32 @@
 				<el-button @click="handleFormCancel">取 消</el-button>
 			</div>
 		</el-dialog>
+
+		<!-- 角色授权表单 -->
+		<el-dialog title="分配权限" :visible.sync="assignRoleResourceFormVisible" width="600px" append-to-body
+							 v-loading="assignRoleResourceFormLoading" element-loading-text="提交中..." element-loading-spinner="el-icon-loading">
+			<el-form ref="assignRoleResourceForm" :model="assignRoleResourceForm" :rules="assignRoleResourceFormRule" label-width="80px">
+				<el-row>
+					<el-col :span="24">
+						<el-form-item label="权限">
+							<el-tree :data="assignRoleResourceFormResourceTree" show-checkbox ref="assignRoleResourceFormResourceTree" node-key="id"
+											 empty-text="加载权限中..." :props="assignRoleResourceFormResourceTreeProps"/>
+						</el-form-item>
+					</el-col>
+				</el-row>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button type="primary" @click="handleAssignRoleResourceFormSubmit">确 定</el-button>
+				<el-button @click="handleAssignRoleResourceFormCancel">取 消</el-button>
+			</div>
+		</el-dialog>
 	</div>
 </template>
 
 <script>
 import { pageRole, createRole, updateRole, deleteRole } from '@/api/permission/role'
+import { treeResource } from '@/api/permission/resource'
+import { listRoleResource, assignRoleResource } from '@/api/permission/permission'
 
 import Pagination from '@/components/Pagination'
 
@@ -104,7 +126,24 @@ export default {
 			roleFormVisible: false,
 			// 标题
 			roleFormTitle: '',
+			// 进度条
 			roleFormLoading: false,
+
+      // 角色添加与修改表单
+      assignRoleResourceForm: {},
+      // 校验规则
+      assignRoleResourceFormRule: {},
+      // 是否可见
+      assignRoleResourceFormVisible: false,
+      // 进度条
+      assignRoleResourceFormLoading: false,
+			// 资源树的数据
+      assignRoleResourceFormResourceTree: [],
+			// 资源树的属性
+      assignRoleResourceFormResourceTreeProps: {
+			  'label': 'name',
+				'children': 'children'
+			},
 
       RoleTypeEnum: RoleTypeEnum
 		}
@@ -157,12 +196,12 @@ export default {
 
 				// 更新
 				if (this.roleForm.id) {
-					updateRole(this.roleForm).then(response => {
+					updateRole(this.roleForm).then(() => {
 						// 取消加载中
 						this.roleFormLoading = false
             // 提示成功
             this.messageSuccess("修改成功")
-            // 取消加载中
+            // 关闭表单
             this.roleFormVisible = false
             // 重新加载角色列表
             this.getRoleList()
@@ -172,12 +211,12 @@ export default {
 					})
 					// 新增
 				} else {
-					createRole(this.roleForm).then(response => {
+					createRole(this.roleForm).then(() => {
 						// 取消加载中
 						this.roleFormLoading = false
             // 提示成功
             this.messageSuccess("新增成功")
-            // 取消加载中
+            // 关闭表单
             this.roleFormVisible = false
             // 重新加载角色树
             this.getRoleList()
@@ -220,7 +259,55 @@ export default {
       this.resetForm("roleListQueryForm");
       // 加载角色列表
       this.getRoleList()
-    }
+    },
+    // 分配权限弹窗
+    handleAssignRoleResourceClick(row) {
+      this.assignRoleResourceFormVisible = true
+      // 重置表单
+      this.resetForm("assignRoleResourceForm")
+      // 设置表单
+      this.assignRoleResourceForm.roleId = row.id
+			// 获得资源树
+      treeResource().then(response => {
+        this.assignRoleResourceFormResourceTree = response.data
+      })
+			// 设置资源树的选中
+      listRoleResource(row.id).then(response => {
+        this.$refs.assignRoleResourceFormResourceTree.setCheckedKeys(response.data)
+			})
+    },
+    // 表单提交
+    handleAssignRoleResourceFormSubmit() {
+      this.$refs["assignRoleResourceForm"].validate(valid => {
+        if (!valid) {
+          return
+        }
+        // 设置加载中，避免重复点击
+        this.assignRoleResourceFormLoading = true
+
+        // 更新
+        assignRoleResource({
+					...this.assignRoleResourceForm,
+          resourceIds: this.$refs.assignRoleResourceFormResourceTree.getCheckedKeys().join(',')
+				}).then(response => {
+          // 取消加载中
+          this.assignRoleResourceFormLoading = false
+          // 提示成功
+          this.messageSuccess("分配成功")
+          // 关闭表单
+          this.assignRoleResourceFormVisible = false
+          // 重新加载角色列表
+          this.getRoleList()
+        }).catch(() => {
+          // 取消加载中
+          this.assignRoleResourceFormLoading = false
+        })
+      })
+    },
+    // 表单取消
+    handleAssignRoleResourceFormCancel() {
+      this.assignRoleResourceFormVisible = false
+    },
 	}
 }
 

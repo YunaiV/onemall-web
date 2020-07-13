@@ -220,7 +220,7 @@ export default {
             this.resourceFormLoading = false
             // 提示成功
             this.messageSuccess("修改成功")
-            // 取消加载中
+            // 关闭表单
             this.resourceFormVisible = false
             // 重新加载资源树
             this.getResourceTree()
@@ -235,7 +235,7 @@ export default {
             this.resourceFormLoading = false
             // 提示成功
             this.messageSuccess("新增成功")
-            // 取消加载中
+            // 关闭表单
             this.resourceFormVisible = false
             // 重新加载资源树
             this.getResourceTree()
