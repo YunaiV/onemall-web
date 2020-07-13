@@ -8,6 +8,13 @@ export function pageRole(data) {
   })
 }
 
+export function listAllRole() {
+  return request({
+    url: '/management-api/role/list-all',
+    method: 'get'
+  })
+}
+
 export function createRole(data) {
   return request({
     url: '/management-api/role/create',

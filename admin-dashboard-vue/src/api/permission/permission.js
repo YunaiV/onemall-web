@@ -17,3 +17,21 @@ export function assignRoleResource(data) {
     params: data
   })
 }
+
+export function listAdminRoles(adminId) {
+  return request({
+    url: '/management-api/permission/list-admin-roles',
+    method: 'get',
+    params: {
+      adminId: adminId
+    }
+  })
+}
+
+export function assignAdminRole(data) {
+  return request({
+    url: '/management-api/permission/assign-admin-role',
+    method: 'post',
+    params: data
+  })
+}
