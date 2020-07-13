@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
-export function listRoleResource(roleId) {
+export function listRoleResources(roleId) {
   return request({
-    url: '/management-api/permission/list-role-resource',
+    url: '/management-api/permission/list-role-resources',
     method: 'get',
     params: {
       roleId: roleId

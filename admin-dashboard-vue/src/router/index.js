@@ -159,7 +159,7 @@ export const constantRoutes = [
         meta: { title: '权限列表', icon: 'list' }
       }
     ]
-  },
+  }
 ]
 
 /**
@@ -469,7 +469,7 @@ export function generateMenuRoutes(menus) {
       path: menu.route,
       meta: {
         title: menu.name,
-        icon: menu.icon,
+        icon: menu.icon
       }
     }
     // 父节点
@@ -478,7 +478,7 @@ export function generateMenuRoutes(menus) {
       tmp.children = generateMenuRoutes(menu.children)
     // 根节点
     } else {
-      tmp.component = importViewComponent(menu.view);
+      tmp.component = importViewComponent(menu.view)
     }
     res.push(tmp)
   })
@@ -487,7 +487,7 @@ export function generateMenuRoutes(menus) {
 
 // 路由懒加载，目前暂时只能通过 require 的方式，无法使用 import 的方式
 export const importViewComponent = (view) => {
-  return (resolve) =>  require([`@/views/${view}`], resolve)
+  return (resolve) => require([`@/views/${view}`], resolve)
 }
 
 const createRouter = () => new Router({

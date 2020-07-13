@@ -29,23 +29,23 @@ import { resetForm } from '@/utils/index'
  */
 Vue.prototype.resetForm = function(refName) {
   if (this.$refs[refName]) {
-    this.$refs[refName].resetFields();
+    this.$refs[refName].resetFields()
   }
 }
 
 Vue.prototype.messageSuccess = function(message) {
   this.$message({
-    type: "success",
+    type: 'success',
     showClose: true,
-    message: message,
+    message: message
   })
 }
 
 Vue.prototype.messageError = function(message) {
   this.$message({
-    type: "error",
+    type: 'error',
     showClose: true,
-    message: message,
+    message: message
   })
 }
 

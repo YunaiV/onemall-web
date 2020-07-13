@@ -8,7 +8,7 @@ export function pageRole(data) {
   })
 }
 
-export function listAllRole() {
+export function listAllRoles() {
   return request({
     url: '/management-api/role/list-all',
     method: 'get'

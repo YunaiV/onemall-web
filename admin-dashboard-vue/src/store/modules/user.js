@@ -8,7 +8,7 @@ const state = {
   avatar: '',
   // 认证信息
   accessToken: getAccessToken(),
-  refreshToken: getRefreshToken(),
+  refreshToken: getRefreshToken()
 }
 
 const mutations = {
@@ -93,7 +93,7 @@ const actions = {
       removeToken()
       resolve()
     })
-  },
+  }
 
 }
 
