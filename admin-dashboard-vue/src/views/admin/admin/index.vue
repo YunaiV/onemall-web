@@ -14,7 +14,7 @@
     <!-- 工具栏 -->
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAddClick">新增</el-button>
+        <el-button v-permission="['system:admin:add']"  type="primary" icon="el-icon-plus" size="mini" @click="handleAddClick">新增</el-button>
       </el-col>
     </el-row>
 
@@ -33,9 +33,12 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="mini" icon="el-icon-edit" @click="handleUpdateClick(scope.row)">修改</el-button>
+          <el-button v-permission="['system:admin:update']"  type="text" size="mini" icon="el-icon-edit" @click="handleUpdateClick(scope.row)">修改</el-button>
           <el-button type="text" size="mini" icon="el-icon-circle-check" @click="handleAssignAdminRoleClick(scope.row)">分配角色</el-button>
-          <el-button type="text" size="mini" icon="el-icon-delete" @click="handleDeleteClick(scope.row)">删除</el-button>
+          <el-button v-permission="['system:admin:update-status']" v-if="scope.row.status === CommonStatusEnum.ENABLE"
+										 type="text" size="mini" icon="el-icon-video-pause" @click="handleStatusUpdateClick(scope.row, CommonStatusEnum.DISABLE)">禁用</el-button>
+          <el-button v-permission="['system:admin:update-status']" v-if="scope.row.status === CommonStatusEnum.DISABLE"
+										 type="text" size="mini" icon="el-icon-video-play" @click="handleStatusUpdateClick(scope.row, CommonStatusEnum.ENABLE)">开启</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -118,7 +121,7 @@
 </template>
 
 <script>
-import { pageAdmin, createAdmin, updateAdmin, deleteAdmin } from '@/api/admin/admin'
+import { pageAdmin, createAdmin, updateAdmin, deleteAdmin, updateAdminStatus } from '@/api/admin/admin'
 import { listAllRoles } from '@/api/permission/role'
 import { listAdminRoles, assignAdminRole } from '@/api/permission/permission'
 import { treeDepartment } from '@/api/admin/department'
@@ -127,6 +130,8 @@ import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 import Pagination from '@/components/Pagination'
+
+import { CommonStatusEnum } from '@/utils/constants'
 
 export default {
   name: 'AdminList',
@@ -183,7 +188,10 @@ export default {
       // 进度条
       assignAdminRoleFormLoading: false,
       // 角色列表
-      assignAdminRoleFormRoleList: []
+      assignAdminRoleFormRoleList: [],
+
+			// 枚举
+      CommonStatusEnum: CommonStatusEnum
     }
   },
   created() {
@@ -277,21 +285,6 @@ export default {
     // 表单取消
     handleFormCancel() {
       this.adminFormVisible = false
-    },
-    // 删除弹窗
-    handleDeleteClick(row) {
-      this.$confirm('确认删除名字为"' + row.name + '"的管理员?', '提示', {
-        type: 'warning',
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(() => {
-        deleteAdmin(row.id).then(response => {
-          // 提示成功
-          this.messageSuccess('删除成功')
-          // 重新加载管理员列表
-          this.getAdminList()
-        })
-      })
     },
     // 搜索表单提交
     adminListQueryFormSubmit() {
@@ -391,7 +384,23 @@ export default {
         roleNames.push(role.name)
 			})
 			return roleNames.join(',')
-		}
+		},
+    // 删除弹窗
+    handleStatusUpdateClick(row, status) {
+      const statusText = status === CommonStatusEnum.ENABLE ? '开启' : '禁用'
+      this.$confirm('确认' + statusText + '名字为"' + row.name + '"的员工?', '提示', {
+        type: 'warning',
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(() => {
+        updateAdminStatus(row.id, status).then(response => {
+          // 提示成功
+          this.messageSuccess(statusText + '成功')
+          // 重新加载管理员列表
+          this.getAdminList()
+        })
+      })
+    },
   }
 }
 

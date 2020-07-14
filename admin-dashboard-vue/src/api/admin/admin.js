@@ -33,3 +33,14 @@ export function deleteAdmin(adminId) {
     }
   })
 }
+
+export function updateAdminStatus(adminId, status) {
+  return request({
+    url: '/management-api/admin/update-status',
+    method: 'post',
+    params: {
+      adminId: adminId,
+      status: status
+    }
+  })
+}

@@ -1,3 +1,8 @@
+export const CommonStatusEnum = {
+  ENABLE: 1, // 开启
+  DISABLE: 2 // 禁用
+}
+
 /**
  * 资源的类型枚举
  */
@@ -13,3 +18,4 @@ export const RoleTypeEnum = {
   SYSTEM: 1, // 内置角色
   CUSTOM: 2 // 自定义角色
 }
+
