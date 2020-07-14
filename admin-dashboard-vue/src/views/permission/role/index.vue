@@ -108,8 +108,9 @@
                 show-checkbox
                 node-key="id"
                 empty-text="加载权限中..."
-                :props="assignRoleResourceFormResourceTreeProps"
-              />
+								:props="assignRoleResourceFormResourceTreeProps"
+								:check-strictly="assignRoleResourceFormResourceTreeCheckStrictly"
+							/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -179,6 +180,8 @@ export default {
 			  'label': 'name',
         'children': 'children'
       },
+			// 在显示复选框的情况下，是否严格的遵循父子不互相关联的做法
+      assignRoleResourceFormResourceTreeCheckStrictly: false,
 
       RoleTypeEnum: RoleTypeEnum
     }
@@ -308,7 +311,12 @@ export default {
       })
       // 设置资源树的选中
       listRoleResources(row.id).then(response => {
+        // 设置为严格，避免设置父节点自动选中子节点，解决半选中问题
+        this.assignRoleResourceFormResourceTreeCheckStrictly = true;
+        // 设置选中
         this.$refs.assignRoleResourceFormResourceTree.setCheckedKeys(response.data)
+				// 设置为非严格，继续使用半选中
+        this.assignRoleResourceFormResourceTreeCheckStrictly = false;
       })
     },
     // 表单提交
@@ -320,13 +328,11 @@ export default {
         // 设置加载中，避免重复点击
         this.assignRoleResourceFormLoading = true
 
-				// 获得选中的权限编号。注意，这里需要获取 getHalfCheckedKeys，即半勾选的父节点
-				let resourceIds = this.$refs.assignRoleResourceFormResourceTree.getHalfCheckedKeys()
-        Array.prototype.unshift.apply(resourceIds, this.$refs.assignRoleResourceFormResourceTree.getCheckedKeys())
         // 更新
         assignRoleResource({
           ...this.assignRoleResourceForm,
-          resourceIds: resourceIds.join(',')
+          // 获得选中的权限编号。注意，这里需要设置为 true，即多获取半勾选的父节点
+          resourceIds: this.$refs.assignRoleResourceFormResourceTree.getCheckedKeys(true).join(',')
         }).then(response => {
           // 取消加载中
           this.assignRoleResourceFormLoading = false
