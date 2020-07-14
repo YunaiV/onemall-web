@@ -21,9 +21,9 @@
     <!-- 管理员列表 -->
     <el-table v-loading="adminListLoading" :data="adminList" row-key="id">
       <el-table-column prop="username" label="账号" width="200" :show-overflow-tooltip="true" />
-      <el-table-column prop="name" label="员工名字" width="200" :show-overflow-tooltip="true" />
+      <el-table-column prop="roles.name" label="员工名字" width="200" :show-overflow-tooltip="true" />
       <el-table-column prop="department.name" label="部门" width="200" :show-overflow-tooltip="true" />
-      <el-table-column prop="roles" label="角色" width="200" :show-overflow-tooltip="true" />
+      <el-table-column prop="roles" :formatter="formatTableRole" label="角色" width="200" :show-overflow-tooltip="true" />
       <!-- TODO 芋艿：接入数据字典 -->
       <el-table-column prop="status" label="在职状态"width="50" />
       <el-table-column label="创建时间" align="center">
@@ -67,7 +67,7 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="部门" prop="departmentId">
-              <el-input v-model="adminForm.departmentId" placeholder="请输入部门" />
+							<treeselect v-model="adminForm.departmentId" :options="adminFormDepartmentTreeSelect" placeholder="请选择部门" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -121,12 +121,16 @@
 import { pageAdmin, createAdmin, updateAdmin, deleteAdmin } from '@/api/admin/admin'
 import { listAllRoles } from '@/api/permission/role'
 import { listAdminRoles, assignAdminRole } from '@/api/permission/permission'
+import { treeDepartment } from '@/api/admin/department'
+
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 import Pagination from '@/components/Pagination'
 
 export default {
   name: 'AdminList',
-  components: { Pagination },
+  components: { Pagination, Treeselect },
   data() {
     return {
       // 管理员列表
@@ -165,8 +169,12 @@ export default {
       adminFormTitle: '',
       // 进度条
       adminFormLoading: false,
+      // 部门树的数据
+      adminFormDepartmentTree: [],
+      // 部门树 TreeSelect 的数据
+      adminFormDepartmentTreeSelect: [],
 
-      // 管理员添加与修改表单
+      // 管理员分配角色表单
       assignAdminRoleForm: {},
       // 校验规则
       assignAdminRoleFormRule: {},
@@ -202,7 +210,11 @@ export default {
       this.adminFormTitle = '添加员工'
       // 重置表单
       this.resetForm('adminForm')
+			this.adminForm = {}
+			// 设置密码必填
       this.adminFormRule.password[0].required = true
+      // 加载部门树
+      this.fetchAdminFormDepartmentTreeSelect()
     },
     // 修改弹窗
     handleUpdateClick(row) {
@@ -210,12 +222,15 @@ export default {
       this.adminFormTitle = '修改员工'
       // 重置表单
       this.resetForm('adminForm')
+      // 设置密码选填
       this.adminFormRule.password[0].required = false
       // 设置修改的表单
       this.adminForm = {
         ...row,
-        children: undefined // TODO 芋艿：有什么办法剔除非表单的字段
-      }
+				departmentId: row.department ? row.department.id : undefined
+			}
+			// 加载部门树
+			this.fetchAdminFormDepartmentTreeSelect()
     },
     // 表单提交
     handleFormSubmit() {
@@ -339,7 +354,44 @@ export default {
     // 表单取消
     handleAssignAdminRoleFormCancel() {
       this.assignAdminRoleFormVisible = false
-    }
+    },
+		// 加载 adminFormDepartmentTreeSelect 部门下拉框的数据
+		fetchAdminFormDepartmentTreeSelect() {
+      treeDepartment().then(response => {
+        this.adminFormDepartmentTreeSelect = this.generateAdminFormDepartmentTreeSelect(response.data)
+      })
+		},
+    // 构建 adminFormDepartmentTreeSelect 的数据
+    generateAdminFormDepartmentTreeSelect(tree) {
+      const res = []
+      tree.forEach(node => {
+        // 创建当前节点
+        const tmp = {
+          id: node.id,
+          label: node.name
+        }
+        res.push(tmp)
+        // 递归子节点
+        if (node.children) {
+          const children = this.generateAdminFormDepartmentTreeSelect(node.children)
+          if (children && children.length > 0) {
+            tmp.children = children
+          }
+        }
+      })
+      return res
+    },
+		// 列表渲染（角色列）
+		formatTableRole(row) {
+      if (!row.roles) {
+        return ''
+			}
+      let roleNames = []
+      row.roles.forEach(role => {
+        roleNames.push(role.name)
+			})
+			return roleNames.join(',')
+		}
   }
 }
 

@@ -165,7 +165,7 @@ export default {
       // 进度条
       roleFormLoading: false,
 
-      // 角色添加与修改表单
+      // 角色分配资源表单
       assignRoleResourceForm: {},
       // 校验规则
       assignRoleResourceFormRule: {},
@@ -210,6 +210,7 @@ export default {
       this.roleFormTitle = '添加角色'
       // 重置表单
       this.resetForm('roleForm')
+			this.roleForm = {}
     },
     // 修改弹窗
     handleUpdateClick(row) {
@@ -218,10 +219,7 @@ export default {
       // 重置表单
       this.resetForm('roleForm')
       // 设置修改的表单
-      this.roleForm = {
-        ...row,
-        children: undefined // TODO 芋艿：有什么办法剔除非表单的字段
-      }
+      this.roleForm = row
     },
     // 表单提交
     handleFormSubmit() {
@@ -312,11 +310,11 @@ export default {
       // 设置资源树的选中
       listRoleResources(row.id).then(response => {
         // 设置为严格，避免设置父节点自动选中子节点，解决半选中问题
-        this.assignRoleResourceFormResourceTreeCheckStrictly = true;
+        this.assignRoleResourceFormResourceTreeCheckStrictly = true
         // 设置选中
         this.$refs.assignRoleResourceFormResourceTree.setCheckedKeys(response.data)
 				// 设置为非严格，继续使用半选中
-        this.assignRoleResourceFormResourceTreeCheckStrictly = false;
+        this.assignRoleResourceFormResourceTreeCheckStrictly = false
       })
     },
     // 表单提交

@@ -185,6 +185,7 @@ export default {
       this.resourceFormTitle = '添加权限'
       // 重置表单
       this.resetForm('resourceForm')
+      this.resourceForm = {}
       // 设置 pid，如果有传递的话
       if (row) {
         this.resourceForm.pid = row.id
