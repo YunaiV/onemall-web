@@ -3,7 +3,7 @@
     <!-- 工具栏 -->
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAddClick">新增</el-button>
+        <el-button v-permission="['system:resource:create']" type="primary" icon="el-icon-plus" size="mini" @click="handleAddClick">新增</el-button>
       </el-col>
     </el-row>
 
@@ -12,7 +12,7 @@
       <el-table-column prop="name" label="名称" width="200" :show-overflow-tooltip="true" />
       <el-table-column label="图标" align="center" width="100">
         <template slot-scope="scope">
-          <svg-icon :icon-class="scope.row.icon" />
+					<svg-icon v-if="scope.row.icon && scope.row.icon.length > 0" :icon-class="scope.row.icon" />
         </template>
       </el-table-column>
       <!-- TODO 芋艿：接入数据字典 -->
@@ -30,13 +30,14 @@
         <template slot-scope="scope">
           <el-button
             v-if="scope.row.type === ResourceTypeEnum.MENU"
+						v-permission="['system:resource:create']"
             type="text"
             size="mini"
             icon="el-icon-plus"
             @click="handleAddClick(scope.row)"
           >新增</el-button>
-          <el-button type="text" size="mini" icon="el-icon-edit" @click="handleUpdateClick(scope.row)">修改</el-button>
-          <el-button type="text" size="mini" icon="el-icon-delete" @click="handleDeleteClick(scope.row)">删除</el-button>
+          <el-button v-permission="['system:resource:update']" type="text" size="mini" icon="el-icon-edit" @click="handleUpdateClick(scope.row)">修改</el-button>
+          <el-button v-permission="['system:resource:delete']" type="text" size="mini" icon="el-icon-delete" @click="handleDeleteClick(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

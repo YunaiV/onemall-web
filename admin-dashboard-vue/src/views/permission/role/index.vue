@@ -320,10 +320,13 @@ export default {
         // 设置加载中，避免重复点击
         this.assignRoleResourceFormLoading = true
 
+				// 获得选中的权限编号。注意，这里需要获取 getHalfCheckedKeys，即半勾选的父节点
+				let resourceIds = this.$refs.assignRoleResourceFormResourceTree.getHalfCheckedKeys()
+        Array.prototype.unshift.apply(resourceIds, this.$refs.assignRoleResourceFormResourceTree.getCheckedKeys())
         // 更新
         assignRoleResource({
           ...this.assignRoleResourceForm,
-          resourceIds: this.$refs.assignRoleResourceFormResourceTree.getCheckedKeys().join(',')
+          resourceIds: resourceIds.join(',')
         }).then(response => {
           // 取消加载中
           this.assignRoleResourceFormLoading = false
