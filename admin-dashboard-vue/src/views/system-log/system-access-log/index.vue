@@ -2,9 +2,17 @@
   <div class="app-container">
     <!--搜索栏 -->
     <el-form ref="systemAccessLogListQueryForm" :model="systemAccessLogListQuery" :inline="true">
-      <el-form-item label="系统访问日志名称" prop="name">
-        <el-input v-model="systemAccessLogListQuery.name" placeholder="请输入系统访问日志名称" clearable size="small" style="width: 240px" />
+      <el-form-item label="应用名" prop="applicationName">
+        <el-input v-model="systemAccessLogListQuery.applicationName" placeholder="请输入应用名" clearable size="small" style="width: 240px" />
       </el-form-item>
+			<el-form-item label="用户类型" prop="userType">
+				<el-select v-model="systemAccessLogListQuery.userType" placeholder="请选择用户类型">
+					<el-option v-for="dict in userTypeDataDicts" :key="dict.value" :label="dict.displayName" :value="dict.value" />
+				</el-select>
+			</el-form-item>
+			<el-form-item label="用户编号" prop="userId">
+				<el-input v-model="systemAccessLogListQuery.userId" placeholder="请输入用户编号" clearable size="small" style="width: 240px" />
+			</el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="systemAccessLogListQueryFormSubmit">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="systemAccessLogListQueryFormReset">重置</el-button>
@@ -102,7 +110,7 @@
 
 <script>
 import { pageSystemAccessLog } from '@/api/systemlog/systemAccessLog'
-import { getDataDictName, DATA_DICT_ENUM_VALE } from '@/utils/dataDict'
+import { getDataDicts, getDataDictName, DATA_DICT_ENUM_VALE } from '@/utils/dataDict'
 
 import Pagination from '@/components/Pagination'
 
@@ -129,7 +137,10 @@ export default {
 			// 系统访问日志查看表单
       systemAccessLogViewForm: {},
       // 是否可见
-      systemAccessLogViewFormVisible: false
+      systemAccessLogViewFormVisible: false,
+
+      // 数据字典
+      userTypeDataDicts: getDataDicts(DATA_DICT_ENUM_VALE.USER_TYPE)
     }
   },
   created() {
