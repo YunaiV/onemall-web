@@ -35,6 +35,8 @@ router.beforeEach(async(to, from, next) => {
         next()
       } else {
         try {
+          // 第零步，获取数据字典
+          await store.dispatch('dataDict/loadDataDicts')
           // 第一步，获取管理员信息
           await store.dispatch('user/getInfo')
           // 第二步，获取菜单列表，并生成相应的动态路由
@@ -42,7 +44,6 @@ router.beforeEach(async(to, from, next) => {
           router.addRoutes(accessRoutes)
           // 第三步，获取权限列表
           await store.dispatch('permission/listAdminPermission')
-          // 第四步，获取数据字典
           // TODO
           // 最终，跳转目标页
           // set the replace: true, so the navigation will not leave a history record

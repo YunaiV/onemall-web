@@ -14,7 +14,7 @@
     <!-- 工具栏 -->
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button v-permission="['system:admin:add']"  type="primary" icon="el-icon-plus" size="mini" @click="handleAddClick">新增</el-button>
+        <el-button v-permission="['system:admin:create']"  type="primary" icon="el-icon-plus" size="mini" @click="handleAddClick">新增</el-button>
       </el-col>
     </el-row>
 
@@ -23,9 +23,8 @@
       <el-table-column prop="username" label="账号" width="200" :show-overflow-tooltip="true" />
       <el-table-column prop="roles.name" label="员工名字" width="200" :show-overflow-tooltip="true" />
       <el-table-column prop="department.name" label="部门" width="200" :show-overflow-tooltip="true" />
-      <el-table-column prop="roles" :formatter="formatTableRole" label="角色" width="200" :show-overflow-tooltip="true" />
-      <!-- TODO 芋艿：接入数据字典 -->
-      <el-table-column prop="status" label="在职状态"width="50" />
+      <el-table-column prop="roles" :formatter="formatRoleTableColumn" label="角色" width="200" :show-overflow-tooltip="true" />
+      <el-table-column prop="status" :formatter="formatStatusTableColumn" label="在职状态" width="50" />
       <el-table-column label="创建时间" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d}') }}</span>
@@ -125,6 +124,7 @@ import { pageAdmin, createAdmin, updateAdmin, deleteAdmin, updateAdminStatus } f
 import { listAllRoles } from '@/api/permission/role'
 import { listAdminRoles, assignAdminRole } from '@/api/permission/permission'
 import { treeDepartment } from '@/api/admin/department'
+import { getDataDictName, DATA_DICT_ENUM_VALE } from '@/utils/dataDict'
 
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -375,7 +375,7 @@ export default {
       return res
     },
 		// 列表渲染（角色列）
-		formatTableRole(row) {
+		formatRoleTableColumn(row) {
       if (!row.roles) {
         return ''
 			}
@@ -384,6 +384,10 @@ export default {
         roleNames.push(role.name)
 			})
 			return roleNames.join(',')
+		},
+		// 列表渲染（状态列）
+    formatStatusTableColumn(row) {
+      return getDataDictName(DATA_DICT_ENUM_VALE.COMMON_STATUS, row.status);
 		},
     // 删除弹窗
     handleStatusUpdateClick(row, status) {
@@ -400,7 +404,7 @@ export default {
           this.getAdminList()
         })
       })
-    },
+    }
   }
 }
 

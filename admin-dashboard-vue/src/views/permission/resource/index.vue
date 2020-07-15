@@ -15,13 +15,12 @@
 					<svg-icon v-if="scope.row.icon && scope.row.icon.length > 0" :icon-class="scope.row.icon" />
         </template>
       </el-table-column>
-      <!-- TODO 芋艿：接入数据字典 -->
-      <el-table-column prop="type" label="类型"width="50" />
-      <el-table-column prop="sort" label="排序" width="50" />
+      <el-table-column prop="type" :formatter="formatTypeTableColumn" label="类型" width="50" />
       <el-table-column prop="route" label="前端路由" width="100" :show-overflow-tooltip="true" />
       <el-table-column prop="view" label="前端组件" width="200" :show-overflow-tooltip="true" />
       <el-table-column prop="permission" label="权限标识" width="200" :show-overflow-tooltip="true" />
-      <el-table-column label="创建时间" align="center">
+			<el-table-column prop="sort" label="排序" width="50" />
+			<el-table-column label="创建时间" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d}') }}</span>
         </template>
@@ -62,9 +61,7 @@
           <el-col :span="24">
             <el-form-item label="类型" prop="type">
               <el-radio-group v-model="resourceForm.type">
-                <!-- TODO 芋艿：数据字典  -->
-                <el-radio :label="1">菜单</el-radio>
-                <el-radio :label="2">按钮</el-radio>
+								<el-radio v-for="dict in resourceTypeDataDicts" :label="parseInt(dict.value)">{{dict.displayName}}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -113,6 +110,8 @@ import { treeResource, createResource, updateResource, deleteResource } from '@/
 
 import { ResourceTypeEnum } from '@/utils/constants'
 
+import { getDataDictName, getDataDicts, DATA_DICT_ENUM_VALE } from '@/utils/dataDict'
+
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
@@ -155,7 +154,10 @@ export default {
       resourceFormLoading: false,
 
       // 枚举
-      ResourceTypeEnum: ResourceTypeEnum
+      ResourceTypeEnum: ResourceTypeEnum,
+
+			// 数据字典
+			resourceTypeDataDicts: getDataDicts(DATA_DICT_ENUM_VALE.RESOURCE_TYPE)
     }
   },
   created() {
@@ -302,6 +304,10 @@ export default {
         }
       })
       return res
+    },
+    // 列表渲染（类型列）
+    formatTypeTableColumn(row) {
+      return getDataDictName(DATA_DICT_ENUM_VALE.RESOURCE_TYPE, row.type);
     }
   }
 }

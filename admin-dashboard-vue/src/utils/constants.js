@@ -1,3 +1,12 @@
+/**
+ * Created by 芋道源码
+ *
+ * 枚举类
+ */
+
+/**
+ * 全局通用状态枚举
+ */
 export const CommonStatusEnum = {
   ENABLE: 1, // 开启
   DISABLE: 2 // 禁用
@@ -18,4 +27,3 @@ export const RoleTypeEnum = {
   SYSTEM: 1, // 内置角色
   CUSTOM: 2 // 自定义角色
 }
-

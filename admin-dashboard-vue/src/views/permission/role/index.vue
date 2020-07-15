@@ -22,8 +22,7 @@
     <el-table v-loading="roleListLoading" :data="roleList" row-key="id">
       <el-table-column prop="name" label="名称" width="200" :show-overflow-tooltip="true" />
       <el-table-column prop="code" label="编码" width="200" :show-overflow-tooltip="true" />
-      <!-- TODO 芋艿：接入数据字典 -->
-      <el-table-column prop="type" label="类型" width="50" />
+      <el-table-column prop="type" :formatter="formatTypeTableColumn" label="类型" width="100" />
       <el-table-column label="创建时间" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d}') }}</span>
@@ -127,6 +126,7 @@
 import { pageRole, createRole, updateRole, deleteRole } from '@/api/permission/role'
 import { treeResource } from '@/api/permission/resource'
 import { listRoleResources, assignRoleResource } from '@/api/permission/permission'
+import { getDataDictName, DATA_DICT_ENUM_VALE } from '@/utils/dataDict'
 
 import Pagination from '@/components/Pagination'
 
@@ -349,6 +349,10 @@ export default {
     // 表单取消
     handleAssignRoleResourceFormCancel() {
       this.assignRoleResourceFormVisible = false
+    },
+    // 列表渲染（类型列）
+    formatTypeTableColumn(row) {
+      return getDataDictName(DATA_DICT_ENUM_VALE.ROLE_TYPE, row.type);
     }
   }
 }

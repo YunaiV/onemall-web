@@ -14,6 +14,8 @@ const getters = {
   refreshToken: state => state.user.refreshToken,
   // 权限信息
   permissions: state => state.permission.permissions,
-  permission_routes: state => state.permission.routes
+  permission_routes: state => state.permission.routes,
+  // 数据字典
+  data_dicts: state => state.dataDict.dataDicts
 }
 export default getters

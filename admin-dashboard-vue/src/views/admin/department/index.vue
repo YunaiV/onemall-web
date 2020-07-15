@@ -10,7 +10,6 @@
     <!-- 部门树 -->
     <el-table v-loading="departmentTreeLoading" :data="departmentTree" row-key="id">
       <el-table-column prop="name" label="名称" width="200" :show-overflow-tooltip="true" />
-      <!-- TODO 芋艿：接入数据字典 -->
       <el-table-column prop="sort" label="排序" width="50" />
       <el-table-column label="创建时间" align="center">
         <template slot-scope="scope">
