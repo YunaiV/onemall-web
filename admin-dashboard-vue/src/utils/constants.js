@@ -27,3 +27,12 @@ export const RoleTypeEnum = {
   SYSTEM: 1, // 内置角色
   CUSTOM: 2 // 自定义角色
 }
+
+/**
+ * 系统异常日志的处理状态枚举
+ */
+export const SystemExceptionLogProcessStatusEnum = {
+  INIT: 0, // 未处理
+  DONE: 1, // 已处理
+  IGNORE: 2, // 已忽略
+}

@@ -29,7 +29,7 @@
       <el-table-column prop="userType" :formatter="formatUserTypeTableColumn" label="用户类型" width="80" :show-overflow-tooltip="true" />
       <el-table-column label="请求时间" align="center" width="200">
         <template slot-scope="scope">
-          <span>{{ scope.row.startTime | parseTime('{y}-{m}-{d}') }}</span>
+          <span>{{ scope.row.startTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作">

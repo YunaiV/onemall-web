@@ -10,7 +10,8 @@ export const DATA_DICT_ENUM_VALE = {
   COMMON_STATUS: 'common_status',
   RESOURCE_TYPE: 'resource_type',
   ROLE_TYPE: 'role_type',
-  USER_TYPE: 'user_type'
+  USER_TYPE: 'user_type',
+  SYSTEM_EXCEPTION_LOG_PROCESS_STATUS: 'system_exception_log_process_status'
 }
 
 /**
