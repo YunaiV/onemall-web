@@ -12,7 +12,7 @@
       <el-table-column prop="enumValue" label="大类枚举值" width="300" :show-overflow-tooltip="true" />
       <el-table-column prop="value" label="小类数值"width="100" />
 			<el-table-column prop="displayName" label="展示名" width="200" :show-overflow-tooltip="true" />
-			<el-table-column prop="memo" label="备注" width="200" :show-overflow-tooltip="true" />
+			<el-table-column prop="memo" label="备注" width="300" :show-overflow-tooltip="true" />
       <el-table-column label="创建时间" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d}') }}</span>

@@ -36,3 +36,12 @@ export const SystemExceptionLogProcessStatusEnum = {
   DONE: 1, // 已处理
   IGNORE: 2, // 已忽略
 }
+
+
+/**
+ * 错误码的类型枚举
+ */
+export const ErrorCodeTypeEnum = {
+  AUTO_GENERATION: 1, // 自动生成
+  MANUAL_OPERATION: 2 // 手动处理
+}

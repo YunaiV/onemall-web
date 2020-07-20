@@ -14,7 +14,7 @@
     <!-- 工具栏 -->
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAddClick">新增</el-button>
+        <el-button v-permission="['system:role:create']" type="primary" icon="el-icon-plus" size="mini" @click="handleAddClick">新增</el-button>
       </el-col>
     </el-row>
 
@@ -32,14 +32,16 @@
         <template slot-scope="scope">
           <el-button
             v-if="scope.row.type === RoleTypeEnum.CUSTOM"
+						v-permission="['system:role:update']"
             type="text"
             size="mini"
             icon="el-icon-edit"
             @click="handleUpdateClick(scope.row)"
           >修改</el-button>
-          <el-button type="text" size="mini" icon="el-icon-circle-check" @click="handleAssignRoleResourceClick(scope.row)">分配权限</el-button>
+          <el-button v-permission="['system:role:delete']" type="text" size="mini" icon="el-icon-circle-check" @click="handleAssignRoleResourceClick(scope.row)">分配权限</el-button>
           <el-button
             v-if="scope.row.type === RoleTypeEnum.CUSTOM"
+						v-permission="['system:role:delete']"
             type="text"
             size="mini"
             icon="el-icon-delete"
