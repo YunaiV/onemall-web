@@ -24,16 +24,6 @@ export function updateAdmin(data) {
   })
 }
 
-export function deleteAdmin(adminId) {
-  return request({
-    url: '/management-api/admin/delete',
-    method: 'post',
-    params: {
-      adminId: adminId
-    }
-  })
-}
-
 export function updateAdminStatus(adminId, status) {
   return request({
     url: '/management-api/admin/update-status',

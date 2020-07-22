@@ -6,7 +6,7 @@
         <el-input v-model="systemAccessLogListQuery.applicationName" placeholder="请输入应用名" clearable size="small" style="width: 240px" />
       </el-form-item>
 			<el-form-item label="用户类型" prop="userType">
-				<el-select v-model="systemAccessLogListQuery.userType" placeholder="请选择用户类型">
+				<el-select v-model="systemAccessLogListQuery.userType" placeholder="请选择用户类型" clearable>
 					<el-option v-for="dict in userTypeDataDicts" :key="dict.value" :label="dict.displayName" :value="dict.value" />
 				</el-select>
 			</el-form-item>

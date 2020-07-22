@@ -389,7 +389,7 @@ export default {
     formatStatusTableColumn(row) {
       return getDataDictName(DATA_DICT_ENUM_VALE.COMMON_STATUS, row.status);
 		},
-    // 删除弹窗
+    // 禁用/启用的弹窗
     handleStatusUpdateClick(row, status) {
       const statusText = status === CommonStatusEnum.ENABLE ? '开启' : '禁用'
       this.$confirm('确认' + statusText + '名字为"' + row.name + '"的员工?', '提示', {
