@@ -9,7 +9,7 @@
       <div class="user-profile-username">
         <a href="/#/user/info">
           <span class="m-nick">{{user ? user.nickname : '未登陆'}}</span>
-        </a>  
+        </a>
       </div>
     </div>
 
@@ -49,7 +49,7 @@
         </router-link>
       </van-row>
     </van-cell-group>
-    
+
     <van-cell-group class="user-group">
       <van-cell title="我的服务" />
       <van-row class="user-links">
@@ -85,7 +85,7 @@
 <script>
 // import { GetUserIndex } from "../../api/user.js";
 import { getAccessToken, clearLoginToken } from '../../utils/cache.js';
-import { getUserInfo } from '../../api/user.js';
+import { userInfo } from '../../api/user.js';
 
 export default {
   data(){
@@ -112,7 +112,7 @@ export default {
   },
   mounted() {
     if (getAccessToken()) { // 存在
-      let response = getUserInfo();
+      let response = userInfo();
       response.then(data => {
         this.user = data;
       });
@@ -152,7 +152,7 @@ export default {
   }
   &-group {
     margin-bottom: .3rem;
-    
+
     .van-cell__value{
       color: #999;
       font-size: 12px;

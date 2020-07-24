@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { doPassportMobileSendRegisterCode, doPassportMobileRegister } from '../../api/user';
+import { passportSendSmsCode, passportLoginBySms } from '../../api/user';
 import { Dialog } from 'vant';
 import { setLoginToken } from '../../utils/cache';
 
@@ -57,7 +57,7 @@ export default {
         });
         return;
       }
-      let response = doPassportMobileSendRegisterCode(this.mobile);
+      let response = passportSendSmsCode(this.mobile, 1); // TODO 优化点：magic number 后续搞一搞
       response.then(data => {
         Dialog.alert({
           title: '系统提示',
@@ -67,9 +67,9 @@ export default {
     },
     submit: function () {
       let that = this;
-      let response = doPassportMobileRegister(this.mobile, this.code);
+      let response = passportLoginBySms(this.mobile, this.code);
       response.then(data => {
-        setLoginToken(data.token.accessToken, data.token.refreshToken);
+        setLoginToken(data.accessToken, data.refreshToken);
         Dialog.alert({
           title: '系统提示',
           message: '登陆成功',

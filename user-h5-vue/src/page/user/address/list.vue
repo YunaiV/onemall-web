@@ -15,7 +15,7 @@
 
 <script>
 
-  import {GetAddressList} from "../../../api/user.js";
+  import {listUserAddressList} from "../../../api/user.js";
   import { AddressList } from 'vant';
   import eventBus from '../../eventBus';
   import orderStore from '../../../store/order'
@@ -53,16 +53,22 @@
     created: function () {
       this.chosenAddressId = this.$route.query.id;
       this.isSelect = this.$route.query.id > 0;
-      GetAddressList().then(response => {
+      listUserAddressList().then(response => {
         this.list = response.map(item => {
-          if (item.hasDefault == 2) {
+          // 如果该收件地址是默认的，则进行默认选中
+					// TODO 优化点：感觉有点点问题 = =
+          if (item.type === 1) {
             this.chosenAddressId = item.id;
           }
 
           // convert data
           return {
-            ...item,
+            id: item.id,
+            name: item.name,
             tel: item.mobile,
+            areaCode: item.areaCode, // TODO 需要拼接好给前端
+            address: item.detailAddress,
+            isDefault: item.type === 1
           }
         });
       })

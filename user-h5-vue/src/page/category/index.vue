@@ -67,7 +67,7 @@
 
 <script>
 import { Search } from "vant";
-// import { GetAddressById } from '../../api/user';
+// import { getUserAddress } from '../../api/user';
 import { getProductCategoryList } from '../../api/product';
 
 export default {
@@ -89,7 +89,7 @@ export default {
   methods: {
     onSearch() {
       // debugger;
-      // GetAddressById(1);
+      // getUserAddress(1);
       // console.log(this.value);
       this.$router.push(
         {name: '/product/search', params: {keyword: this.keyword}}
@@ -97,7 +97,7 @@ export default {
     },
     onClick(key) {
       // debugger;
-      // GetAddressById(1);
+      // getUserAddress(1);
       // 设置 activeKey
       this.activeKey = key;
       // 读取子节点的分类

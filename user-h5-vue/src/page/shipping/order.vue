@@ -89,7 +89,7 @@
     getCartConfirmCreateOrder,
     createOrderFromCart
   } from '../../api/order';
-  import {GetDefaultAddress} from '../../api/user';
+  import {getDefaultAddress} from '../../api/user';
   import orderStore from '../../store/order';
   import { Dialog } from 'vant';
 
@@ -271,7 +271,7 @@
     },
     created() {
       // 加载地址
-      GetDefaultAddress().then((result) => {
+      getDefaultAddress().then((result) => {
         if (!this.addressData.name && result) {
           this.type = 'add1';
           this.addressData = result;

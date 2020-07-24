@@ -1,22 +1,22 @@
 import request from "../config/request";
 
-export function GetFavoritePage(pageNo,pageSize){
+export function GetFavoritePage(pageNo, pageSize) {
   return request({
     url: '/user-api/users/favorite/page',
     method: 'get',
-    params: { pageNo,pageSize }
+    params: {pageNo, pageSize}
   })
 }
 
-export function DelFavorite(spuId){
+export function DelFavorite(spuId) {
   return request({
     url: '/user-api/users/favorite/remove',
     method: 'DELETE',
-    params: { spuId }
+    params: {spuId}
   })
 }
 
-export function hasUserSpuFavorite(spuId){
+export function hasUserSpuFavorite(spuId) {
   return request({
     url: '/user-api/users/favorite/hasUserFavorite',
     method: 'get',
@@ -25,25 +25,25 @@ export function hasUserSpuFavorite(spuId){
 }
 
 
-export function GetCoupon(data){
+export function GetCoupon(data) {
   return request({
     url: '/User/GetCoupon',
     method: 'Post',
-    params: { data }
+    params: {data}
   })
 }
 
-export function ExchangeCoupon(code){
+export function ExchangeCoupon(code) {
   return request({
     url: '/User/ExchangeCoupon',
     method: 'Post',
-    params: { code:code }
+    params: {code: code}
   })
 }
 
-export function getUserInfo() {
+export function userInfo() {
   return request({
-    url: '/user-api/users/user/info',
+    url: '/user-api/user/info',
     method: 'get',
   });
 }
@@ -58,9 +58,9 @@ export function doUserUpdateNickname(nickname) {
   });
 }
 
-export function doPassportMobileRegister(mobile, code) {
+export function passportLoginBySms(mobile, code) {
   return request({
-    url: '/user-api/users/passport/mobile/register',
+    url: '/user-api/passport/login-by-sms',
     method: 'post',
     params: {
       mobile,
@@ -69,62 +69,62 @@ export function doPassportMobileRegister(mobile, code) {
   });
 }
 
-export function doPassportMobileSendRegisterCode(mobile) {
+export function passportSendSmsCode(mobile, scene) {
   return request({
-    url: '/user-api/users/passport/mobile/send_register_code',
+    url: '/user-api/passport/send-sms-code',
     method: 'post',
     params: {
       mobile,
+      scene
     }
   });
 }
 
 
-
 // -------------------------- address
 
-export function GetAddressList(){
+export function listUserAddressList() {
   return request({
-    url: '/user-api/users/address/list',
+    url: '/user-api/user-address/list',
     method: 'get',
   })
 }
 
-export function GetAddressById(id){
+export function getUserAddress(userAddressId) {
   return request({
-    url: '/user-api/users/address/address',
+    url: '/user-api/user-address/get',
     method: 'get',
-    params: { id }
+    params: {userAddressId}
   })
 }
 
-export function GetDefaultAddress(){
+export function getDefaultAddress() {
   return request({
-    url: '/user-api/users/address/default_address',
+    url: '/user-api/user-address/get-default',
     method: 'get',
   })
 }
 
-export function UpdateAddress(data){
+export function updateUserAddress(data) {
   return request({
-    url: '/user-api/users/address/update',
-    method: 'PUT',
-    params: data
-  })
-}
-
-export function SaveAddress(data){
-  return request({
-    url: '/user-api/users/address/add',
+    url: '/user-api/user-address/update',
     method: 'POST',
     params: data
   })
 }
 
-export function DelAddress(data){
+export function createUserAddress(data) {
   return request({
-    url: '/user-api/users/address/remove',
-    method: 'DELETE',
+    url: '/user-api/user-address/create',
+    method: 'POST',
     params: data
+  })
+}
+
+export function deleteUserAddress(userAddressId) {
+  return request({
+    url: '/user-api/user-address/delete',
+    method: 'POST',
+    params: {userAddressId}
   })
 }
