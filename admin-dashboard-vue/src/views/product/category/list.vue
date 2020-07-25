@@ -75,7 +75,7 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
-						<el-form-item label="类型" prop="status">
+						<el-form-item label="状态" prop="status">
 							<el-radio-group v-model="productCategoryForm.status">
 								<el-radio v-for="dict in commonStatusDataDicts" :label="parseInt(dict.value)">{{dict.displayName}}</el-radio>
 							</el-radio-group>
