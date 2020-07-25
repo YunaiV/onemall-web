@@ -85,7 +85,7 @@
 <script>
 // import { GetUserIndex } from "../../api/user.js";
 import { getAccessToken, clearLoginToken } from '../../utils/cache.js';
-import { userInfo } from '../../api/user.js';
+import { getUserInfo } from '../../api/user.js';
 
 export default {
   data(){
@@ -112,7 +112,7 @@ export default {
   },
   mounted() {
     if (getAccessToken()) { // 存在
-      let response = userInfo();
+      let response = getUserInfo();
       response.then(data => {
         this.user = data;
       });

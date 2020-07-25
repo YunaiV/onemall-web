@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { userInfo, doUserUpdateNickname } from '../../../api/user.js';
+import { getUserInfo, updateUserNickname } from '../../../api/user.js';
 import { Dialog } from 'vant';
 
 export default {
@@ -59,7 +59,7 @@ export default {
     onShowNicknameDialogClose: function (action, done) {
       if (action === 'confirm') {
         let that = this;
-        let response = doUserUpdateNickname(this.updateNickname);
+        let response = updateUserNickname(this.updateNickname);
         response.then(data => {
           // 修改
           that.user.nickname = that.updateNickname;
@@ -77,7 +77,7 @@ export default {
     }
   },
   mounted() {
-    let response = userInfo();
+    let response = getUserInfo();
     response.then(data => {
       this.user = data;
     });

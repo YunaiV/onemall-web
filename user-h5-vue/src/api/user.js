@@ -41,16 +41,16 @@ export function ExchangeCoupon(code) {
   })
 }
 
-export function userInfo() {
+export function getUserInfo() {
   return request({
     url: '/user-api/user/info',
     method: 'get',
   });
 }
 
-export function doUserUpdateNickname(nickname) {
+export function updateUserNickname(nickname) {
   return request({
-    url: '/user-api/users/user/update_nickname',
+    url: '/user-api/user/update-nickname',
     method: 'post',
     params: {
       nickname,
