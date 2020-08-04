@@ -170,8 +170,7 @@
 </template>
 
 <script>
-  // import skuData from '../../data/sku';
-  import {getProductSpuInfo,collectionSpu} from '../../api/product';
+  import {getProductSpuDetail,collectionSpu} from '../../api/product';
   import {addCart, countCart, getCartCalcSkuPrice} from '../../api/order';
   import {hasUserSpuFavorite} from  '../../api/user';
   import {Dialog} from 'vant';
@@ -389,7 +388,7 @@
     mounted() {
       // 获得商品数据
       let id = this.$route.params.id; // 商品编号
-      getProductSpuInfo(id).then(data => {
+      getProductSpuDetail(id).then(data => {
         // 设置 spu
         this.spu = data;
         // 初始化 vanSku

@@ -43,7 +43,7 @@
                 return (data / 100).toFixed(2);
             },
             skipProductSpuInfo(data) {
-                // return getProductSpuInfo(data);
+                // return getProductSpuDetail(data);
                 this.$router.push('/product/'+data);
             },
             onClose(item) {

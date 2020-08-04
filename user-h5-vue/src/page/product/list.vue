@@ -27,7 +27,6 @@
 
 <script>
 import { getProductCategoryList, getProductSpuPage } from '../../api/product';
-import {getProductPage} from "../../api/search";
 
 export default {
   data() {
@@ -65,7 +64,7 @@ export default {
     },
     loadProductList(categoryId, page) {
       this.childCategory.id = categoryId;
-      getProductPage({
+      getProductSpuPage({
         pageNo: page,
         pageSize: this.pageSize,
         cid: this.childCategory.id,

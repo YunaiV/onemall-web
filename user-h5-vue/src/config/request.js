@@ -8,9 +8,9 @@ import {setLoginToken} from "../utils/cache";
 const serviceRouter = function(requestUrl) {
   function getConfig() {
     const configDev = {
-      '/order-api': {
-        prefix: '/order-api',
-        target: 'http://127.0.0.1:18088/order-api',
+      '/shop-api': {
+        prefix: '/shop-api',
+        target: 'http://127.0.0.1:18084/shop-api',
       },
       '/user-api': {
         prefix: '/user-api',
@@ -27,11 +27,7 @@ const serviceRouter = function(requestUrl) {
       '/pay-api': {
         prefix: '/pay-api',
         target: 'http://127.0.0.1:18084/pay-api',
-      },
-      '/search-api': {
-        prefix: '/search-api',
-        target: 'http://127.0.0.1:18086/search-api',
-      },
+      }
     };
 
     const configProd = {

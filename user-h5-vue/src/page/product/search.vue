@@ -187,7 +187,7 @@
 
 <script>
 import searchtop from "../../components/search/searchtop";
-import {getProductCondition, getProductPage} from "../../api/search";
+import {getProductSearchCondition, getProductSpuPage} from "../../api/product";
 
 export default {
   components: {
@@ -251,7 +251,7 @@ export default {
         }
         // 根据排序，重新搜索
         let page = 1;
-        getProductPage({
+        getProductSpuPage({
           pageNo: page,
           pageSize: this.pageSize,
           keyword: this.keyword,
@@ -270,7 +270,7 @@ export default {
       this.filterShow = false;
       // 根据分类，重新搜索
       let page = 1;
-      getProductPage({
+      getProductSpuPage({
         pageNo: page,
         pageSize: this.pageSize,
         keyword: this.keyword,
@@ -298,7 +298,7 @@ export default {
       this.categoryId = undefined;
       // 查询
       let page = 1;
-      getProductPage({
+      getProductSpuPage({
         pageNo: page,
         pageSize: this.pageSize,
         keyword: keyword,
@@ -312,7 +312,7 @@ export default {
       // debugger;
       // 进入下一页
       let page = this.page + 1;
-      getProductPage({
+      getProductSpuPage({
         pageNo: page,
         pageSize: this.pageSize,
         keyword: this.keyword,
@@ -335,7 +335,7 @@ export default {
       this.loading = false;
     },
     loadSearchCondition() {
-      getProductCondition({
+      getProductSearchCondition({
         keyword: this.keyword,
       }).then(data => {
         this.categories = data.categories;
