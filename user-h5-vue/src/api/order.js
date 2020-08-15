@@ -71,9 +71,9 @@ export function createOrderFromCart(userAddressId, couponCardId, remark) {
   });
 }
 
-export function addCart(skuId, quantity) {
+export function addCartItem(skuId, quantity) {
   return request({
-    url: '/order-api/users/cart/add',
+    url: '/shop-api/cart/add',
     method: 'post',
     params: {
       skuId,
@@ -82,9 +82,9 @@ export function addCart(skuId, quantity) {
   });
 }
 
-export function countCart() {
+export function sumCartItemQuantity() {
   return request({
-    url: '/order-api/users/cart/count',
+    url: '/shop-api/cart/sum-quantity',
     method: 'get',
     params: {
     }
@@ -93,7 +93,7 @@ export function countCart() {
 
 export function listCart() {
   return request({
-    url: '/order-api/users/cart/list',
+    url: '/shop-api/cart/get-detail',
     method: 'get',
     params: {
     }
@@ -102,7 +102,7 @@ export function listCart() {
 
 export function updateCartSelected(skuIds, selected) {
   return request({
-    url: '/order-api/users/cart/update_selected',
+    url: '/shop-api/cart/update-selected',
     method: 'post',
     params: {
       skuIds: skuIds.join(','),

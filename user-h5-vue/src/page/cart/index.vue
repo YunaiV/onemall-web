@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <headerNav title="购物车"/>
-       <van-cell  value="编辑商品" class="head">
+       <van-cell  value="编辑商品(暂未开发)" class="head">
         <template slot="title">
           <van-checkbox v-model="checkedAll" @change="onSelectAll" >全选</van-checkbox>
         </template>
@@ -199,7 +199,11 @@ export default {
         return;
       }
       updateCartSelected(diffItemIds, selected).then(data => {
-        this.handleData(data);
+        // this.handleData(data);
+        // 获得购物车列表
+        listCart().then(data => {
+          this.handleData(data);
+        });
       })
       // debugger;
     },
@@ -224,8 +228,13 @@ export default {
     },
     convertProduct(item) {
       // debugger;
+			let attrKeyValueNames = [];
+			item.attrs.forEach(attr => {
+        attrKeyValueNames.push(attr.attrKeyName + ':' + attr.attrValueName);
+			});
       return {
         ...item.spu,
+				name: item.spu.name + '(' + attrKeyValueNames.join(' ') + ')',
         quantity: item.buyQuantity,
         price: item.buyPrice || item.price,
         sku: {

@@ -16,7 +16,6 @@
                         <van-tag v-if="product.promotionActivityTitle" plain type="danger">
                             {{ product.promotionActivityTitle }}
                         </van-tag>
-
                     </p>
                     <!--  TODO 芋艿 暂时去掉 -->
 <!--                    <van-stepper v-if="iscard" v-model="product.quantity" :max="product.max" :min="product.min"/>-->

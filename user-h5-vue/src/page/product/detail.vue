@@ -171,7 +171,7 @@
 
 <script>
   import {getProductSpuDetail,collectionSpu} from '../../api/product';
-  import {addCart, countCart, getCartCalcSkuPrice} from '../../api/order';
+  import {addCartItem, sumCartItemQuantity, getCartCalcSkuPrice} from '../../api/order';
   import {hasUserSpuFavorite} from  '../../api/user';
   import {Dialog} from 'vant';
   import {checkLogin} from "../../utils/cache";
@@ -374,9 +374,11 @@
         }
         const { selectedNum } = data;
         // debugger;
-        addCart(data.selectedSkuComb.id,selectedNum).then(data => {
+        addCartItem(data.selectedSkuComb.id,selectedNum).then(data => {
           // 修改购物车数量
-          this.cartCount = data;
+          sumCartItemQuantity().then(data => {
+            this.cartCount = data;
+          })
           // 提示
           Dialog.alert({
             title: '系统提示',
@@ -459,7 +461,7 @@
       });
       // 获得购物车数量
       if (checkLogin()) {
-        countCart().then(data => {
+        sumCartItemQuantity().then(data => {
           this.cartCount = data;
         })
       }
