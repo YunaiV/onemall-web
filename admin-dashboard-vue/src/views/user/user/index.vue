@@ -28,7 +28,7 @@
       <el-table-column label="积分" width="100" :show-overflow-tooltip="true" />
       <el-table-column label="会员标签" width="100" :show-overflow-tooltip="true" />
       <el-table-column label="备注" width="100" :show-overflow-tooltip="true" />
-      <el-table-column prop="type" :formatter="formatStatusTableColumn" label="状态" width="100" />
+      <el-table-column prop="status" :formatter="formatStatusTableColumn" label="状态" width="100" />
       <el-table-column label="注册时间" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d}') }}</span>
@@ -246,7 +246,7 @@ export default {
       // 加载错误码列表
       this.getUserList()
     },
-    // 列表渲染（类型列）
+    // 列表渲染（状态列）
     formatStatusTableColumn(row) {
       return getDataDictName(DATA_DICT_ENUM_VALE.COMMON_STATUS, row.type)
     }

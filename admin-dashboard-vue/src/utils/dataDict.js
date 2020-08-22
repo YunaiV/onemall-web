@@ -12,7 +12,11 @@ export const DATA_DICT_ENUM_VALE = {
   ROLE_TYPE: 'role_type',
   USER_TYPE: 'user_type',
   SYSTEM_EXCEPTION_LOG_PROCESS_STATUS: 'system_exception_log_process_status',
-  ERROR_CODE_TYPE: 'error_code_type'
+  ERROR_CODE_TYPE: 'error_code_type',
+  PREFERENTIAL_TYPE: 'preferential_type',
+  RANGE_TYPE: 'range_type',
+  COUPON_TEMPLATE_DATE_TYPE: 'coupon_template_date_type',
+  COUPON_TEMPLATE_STATUS: 'coupon_template_status',
 }
 
 /**

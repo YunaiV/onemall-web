@@ -44,3 +44,38 @@ export const ErrorCodeTypeEnum = {
   AUTO_GENERATION: 1, // 自动生成
   MANUAL_OPERATION: 2 // 手动处理
 }
+
+/**
+ * 优惠类型枚举
+ */
+export const PreferentialTypeEnum = {
+  PRICE: 1, // 减价
+  DISCOUNT: 2 // 打折
+}
+
+/**
+ * 可用范围的类型枚举
+ */
+export const RangeTypeEnum = {
+  ALL: 10, // 所有可用
+  PRODUCT_INCLUDE_PART: 20, // 部分商品可用，或指定商品可用
+  PRODUCT_EXCLUDE_PART: 21, // 部分商品不可用，或指定商品不可用
+  CATEGORY_INCLUDE_PART: 30, // 部分分类可用，或指定分类可用
+  CATEGORY_EXCLUDE_PART: 31, // 部分分类不可用，或指定分类不可用
+}
+
+/**
+ * 优惠劵（码）模板的时间类型的枚举
+ */
+export const CouponTemplateDateTypeEnum = {
+  FIXED_DATE: 1, // 固定日期
+  FIXED_TERM: 2, // 领取日期
+}
+
+/**
+ * 优惠劵（码）模板的状态的枚举
+ */
+export const CouponTemplateStatusEnum = {
+  ENABLE: 1, // 生效中
+  DISABLE: 2, // 已失效
+}

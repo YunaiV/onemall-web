@@ -21,8 +21,6 @@ import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
 
-import { resetForm } from '@/utils/index'
-
 // Vue 全局方法挂载
 
 /**
