@@ -66,12 +66,12 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="小类数值" prop="enumValue">
+            <el-form-item label="小类数值" prop="value">
               <el-input v-model="dataDictForm.value" placeholder="请输入小类数值" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="展示名" prop="enumValue">
+            <el-form-item label="展示名" prop="displayName">
               <el-input v-model="dataDictForm.displayName" placeholder="请输入展示名" />
             </el-form-item>
           </el-col>

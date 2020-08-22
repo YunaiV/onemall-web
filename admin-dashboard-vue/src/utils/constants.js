@@ -87,3 +87,30 @@ export const CouponTemplateTypeEnum = {
   CARD: 1, // 优惠劵
   CODE: 2, // 折扣卷
 }
+
+/**
+ * 促销活动类型枚举
+ */
+export const PromotionActivityTypeEnum = {
+  TIME_LIMITED_DISCOUNT: 1, // 限时折扣
+  FULL_PRIVILEGE: 2, // 满减送
+}
+
+/**
+ * 匹配类型枚举
+ */
+export const MeetTypeEnum = {
+  PRICE: 1, // 金额
+  QUANTITY: 2 // 数量
+}
+
+/**
+ * 促销活动状态枚举
+ */
+export const PromotionActivityStatusEnum = {
+  WAIT: 10, // 未开始
+  RUN: 20, // 进行中
+  END: 30, // 已结束
+  INVALID: 40, // 已撤销
+  DELETED: 50, // 已删除
+}
