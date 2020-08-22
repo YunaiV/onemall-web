@@ -14,7 +14,7 @@
     <!-- 工具栏 -->
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button v-permission="['system:admin:create']"  type="primary" icon="el-icon-plus" size="mini" @click="handleAddClick">新增</el-button>
+        <el-button v-permission="['system:admin:create']" type="primary" icon="el-icon-plus" size="mini" @click="handleAddClick">新增</el-button>
       </el-col>
     </el-row>
 
@@ -32,12 +32,24 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button v-permission="['system:admin:update']"  type="text" size="mini" icon="el-icon-edit" @click="handleUpdateClick(scope.row)">修改</el-button>
+          <el-button v-permission="['system:admin:update']" type="text" size="mini" icon="el-icon-edit" @click="handleUpdateClick(scope.row)">修改</el-button>
           <el-button type="text" size="mini" icon="el-icon-circle-check" @click="handleAssignAdminRoleClick(scope.row)">分配角色</el-button>
-          <el-button v-permission="['system:admin:update-status']" v-if="scope.row.status === CommonStatusEnum.ENABLE"
-										 type="text" size="mini" icon="el-icon-video-pause" @click="handleStatusUpdateClick(scope.row, CommonStatusEnum.DISABLE)">禁用</el-button>
-          <el-button v-permission="['system:admin:update-status']" v-if="scope.row.status === CommonStatusEnum.DISABLE"
-										 type="text" size="mini" icon="el-icon-video-play" @click="handleStatusUpdateClick(scope.row, CommonStatusEnum.ENABLE)">开启</el-button>
+          <el-button
+            v-if="scope.row.status === CommonStatusEnum.ENABLE"
+            v-permission="['system:admin:update-status']"
+            type="text"
+            size="mini"
+            icon="el-icon-video-pause"
+            @click="handleStatusUpdateClick(scope.row, CommonStatusEnum.DISABLE)"
+          >禁用</el-button>
+          <el-button
+            v-if="scope.row.status === CommonStatusEnum.DISABLE"
+            v-permission="['system:admin:update-status']"
+            type="text"
+            size="mini"
+            icon="el-icon-video-play"
+            @click="handleStatusUpdateClick(scope.row, CommonStatusEnum.ENABLE)"
+          >开启</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -69,7 +81,7 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="部门" prop="departmentId">
-							<treeselect v-model="adminForm.departmentId" :options="adminFormDepartmentTreeSelect" placeholder="请选择部门" />
+              <treeselect v-model="adminForm.departmentId" :options="adminFormDepartmentTreeSelect" placeholder="请选择部门" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -190,7 +202,7 @@ export default {
       // 角色列表
       assignAdminRoleFormRoleList: [],
 
-			// 枚举
+      // 枚举
       CommonStatusEnum: CommonStatusEnum
     }
   },
@@ -218,8 +230,8 @@ export default {
       this.adminFormTitle = '添加员工'
       // 重置表单
       this.resetForm('adminForm')
-			this.adminForm = {}
-			// 设置密码必填
+      this.adminForm = {}
+      // 设置密码必填
       this.adminFormRule.password[0].required = true
       // 加载部门树
       this.fetchAdminFormDepartmentTreeSelect()
@@ -235,10 +247,10 @@ export default {
       // 设置修改的表单
       this.adminForm = {
         ...row,
-				departmentId: row.department ? row.department.id : undefined
-			}
-			// 加载部门树
-			this.fetchAdminFormDepartmentTreeSelect()
+        departmentId: row.department ? row.department.id : undefined
+      }
+      // 加载部门树
+      this.fetchAdminFormDepartmentTreeSelect()
     },
     // 表单提交
     handleFormSubmit() {
@@ -348,12 +360,12 @@ export default {
     handleAssignAdminRoleFormCancel() {
       this.assignAdminRoleFormVisible = false
     },
-		// 加载 adminFormDepartmentTreeSelect 部门下拉框的数据
-		fetchAdminFormDepartmentTreeSelect() {
+    // 加载 adminFormDepartmentTreeSelect 部门下拉框的数据
+    fetchAdminFormDepartmentTreeSelect() {
       treeDepartment().then(response => {
         this.adminFormDepartmentTreeSelect = this.generateAdminFormDepartmentTreeSelect(response.data)
       })
-		},
+    },
     // 构建 adminFormDepartmentTreeSelect 的数据
     generateAdminFormDepartmentTreeSelect(tree) {
       const res = []
@@ -374,21 +386,21 @@ export default {
       })
       return res
     },
-		// 列表渲染（角色列）
-		formatRoleTableColumn(row) {
+    // 列表渲染（角色列）
+    formatRoleTableColumn(row) {
       if (!row.roles) {
         return ''
-			}
-      let roleNames = []
+      }
+      const roleNames = []
       row.roles.forEach(role => {
         roleNames.push(role.name)
-			})
-			return roleNames.join(',')
-		},
-		// 列表渲染（状态列）
+      })
+      return roleNames.join(',')
+    },
+    // 列表渲染（状态列）
     formatStatusTableColumn(row) {
-      return getDataDictName(DATA_DICT_ENUM_VALE.COMMON_STATUS, row.status);
-		},
+      return getDataDictName(DATA_DICT_ENUM_VALE.COMMON_STATUS, row.status)
+    },
     // 禁用/启用的弹窗
     handleStatusUpdateClick(row, status) {
       const statusText = status === CommonStatusEnum.ENABLE ? '开启' : '禁用'

@@ -3,7 +3,7 @@
     <!-- 工具栏 -->
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-					<el-button v-permission="['system:department:create']" type="primary" icon="el-icon-plus" size="mini" @click="handleAddClick">新增</el-button>
+        <el-button v-permission="['system:department:create']" type="primary" icon="el-icon-plus" size="mini" @click="handleAddClick">新增</el-button>
       </el-col>
     </el-row>
 
@@ -19,7 +19,7 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
-						v-permission="['system:department:create']"
+            v-permission="['system:department:create']"
             type="text"
             size="mini"
             icon="el-icon-plus"

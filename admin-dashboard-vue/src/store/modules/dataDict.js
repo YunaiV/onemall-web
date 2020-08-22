@@ -22,7 +22,7 @@ const actions = {
       const dataDictMap = {}
       response.data.forEach(dataDict => {
         // 获得 enumValue 层级
-        let enumValueObj = dataDictMap[dataDict.enumValue]
+        const enumValueObj = dataDictMap[dataDict.enumValue]
         if (!enumValueObj) {
           dataDictMap[dataDict.enumValue] = []
         }

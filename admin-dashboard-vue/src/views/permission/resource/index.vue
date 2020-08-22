@@ -12,15 +12,15 @@
       <el-table-column prop="name" label="名称" width="200" :show-overflow-tooltip="true" />
       <el-table-column label="图标" align="center" width="100">
         <template slot-scope="scope">
-					<svg-icon v-if="scope.row.icon && scope.row.icon.length > 0" :icon-class="scope.row.icon" />
+          <svg-icon v-if="scope.row.icon && scope.row.icon.length > 0" :icon-class="scope.row.icon" />
         </template>
       </el-table-column>
       <el-table-column prop="type" :formatter="formatTypeTableColumn" label="类型" width="50" />
       <el-table-column prop="route" label="前端路由" width="100" :show-overflow-tooltip="true" />
       <el-table-column prop="view" label="前端组件" width="200" :show-overflow-tooltip="true" />
       <el-table-column prop="permission" label="权限标识" width="200" :show-overflow-tooltip="true" />
-			<el-table-column prop="sort" label="排序" width="50" />
-			<el-table-column label="创建时间" align="center">
+      <el-table-column prop="sort" label="排序" width="50" />
+      <el-table-column label="创建时间" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d}') }}</span>
         </template>
@@ -29,7 +29,7 @@
         <template slot-scope="scope">
           <el-button
             v-if="scope.row.type === ResourceTypeEnum.MENU"
-						v-permission="['system:resource:create']"
+            v-permission="['system:resource:create']"
             type="text"
             size="mini"
             icon="el-icon-plus"
@@ -61,7 +61,7 @@
           <el-col :span="24">
             <el-form-item label="类型" prop="type">
               <el-radio-group v-model="resourceForm.type">
-								<el-radio v-for="dict in resourceTypeDataDicts" :label="parseInt(dict.value)">{{dict.displayName}}</el-radio>
+                <el-radio v-for="dict in resourceTypeDataDicts" :label="parseInt(dict.value)">{{ dict.displayName }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -156,8 +156,8 @@ export default {
       // 枚举
       ResourceTypeEnum: ResourceTypeEnum,
 
-			// 数据字典
-			resourceTypeDataDicts: getDataDicts(DATA_DICT_ENUM_VALE.RESOURCE_TYPE)
+      // 数据字典
+      resourceTypeDataDicts: getDataDicts(DATA_DICT_ENUM_VALE.RESOURCE_TYPE)
     }
   },
   created() {
@@ -307,7 +307,7 @@ export default {
     },
     // 列表渲染（类型列）
     formatTypeTableColumn(row) {
-      return getDataDictName(DATA_DICT_ENUM_VALE.RESOURCE_TYPE, row.type);
+      return getDataDictName(DATA_DICT_ENUM_VALE.RESOURCE_TYPE, row.type)
     }
   }
 }

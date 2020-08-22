@@ -12,12 +12,12 @@
       <el-table-column prop="name" label="分类名称" width="200" :show-overflow-tooltip="true" />
       <el-table-column label="图片" align="center" width="200">
         <template slot-scope="scope">
-					<el-image v-if="scope.row.picUrl && scope.row.picUrl.length > 0" :src="scope.row.picUrl"/>
-				</template>
+          <el-image v-if="scope.row.picUrl && scope.row.picUrl.length > 0" :src="scope.row.picUrl" />
+        </template>
       </el-table-column>
-			<el-table-column prop="sort" label="排序" width="50" />
-			<el-table-column prop="status" :formatter="formatStatusTableColumn" label="状态" width="50" />
-			<el-table-column label="创建时间" align="center">
+      <el-table-column prop="sort" label="排序" width="50" />
+      <el-table-column prop="status" :formatter="formatStatusTableColumn" label="状态" width="50" />
+      <el-table-column label="创建时间" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d}') }}</span>
         </template>
@@ -25,7 +25,7 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
-						v-permission="['product:category:create']"
+            v-permission="['product:category:create']"
             type="text"
             size="mini"
             icon="el-icon-plus"
@@ -69,19 +69,19 @@
               <el-input v-model="productCategoryForm.picUrl" placeholder="请输入图片" />
             </el-form-item>
           </el-col>
-					<el-col :span="24">
-						<el-form-item label="描述" prop="description">
-							<el-input type="textarea" v-model="productCategoryForm.description" placeholder="请输入图片" />
-						</el-form-item>
-					</el-col>
-					<el-col :span="24">
-						<el-form-item label="状态" prop="status">
-							<el-radio-group v-model="productCategoryForm.status">
-								<el-radio v-for="dict in commonStatusDataDicts" :label="parseInt(dict.value)">{{dict.displayName}}</el-radio>
-							</el-radio-group>
-						</el-form-item>
-					</el-col>
-				</el-row>
+          <el-col :span="24">
+            <el-form-item label="描述" prop="description">
+              <el-input v-model="productCategoryForm.description" type="textarea" placeholder="请输入图片" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="状态" prop="status">
+              <el-radio-group v-model="productCategoryForm.status">
+                <el-radio v-for="dict in commonStatusDataDicts" :label="parseInt(dict.value)">{{ dict.displayName }}</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="handleFormSubmit">确 定</el-button>
@@ -124,9 +124,9 @@ export default {
         sort: [
           { required: true, message: '排序不能为空', trigger: 'blur' }
         ],
-				status: [
+        status: [
           { required: true, message: '状态不能为空', trigger: 'blur' }
-				]
+        ]
       },
       // 是否可见
       productCategoryFormVisible: false,
@@ -139,7 +139,7 @@ export default {
       // 枚举
       CommonStatusEnum: CommonStatusEnum,
 
-			// 数据字典
+      // 数据字典
       commonStatusDataDicts: getDataDicts(DATA_DICT_ENUM_VALE.COMMON_STATUS)
     }
   },
@@ -275,7 +275,7 @@ export default {
     },
     // 列表渲染（状态列）
     formatStatusTableColumn(row) {
-      return getDataDictName(DATA_DICT_ENUM_VALE.COMMON_STATUS, row.status);
+      return getDataDictName(DATA_DICT_ENUM_VALE.COMMON_STATUS, row.status)
     }
   }
 }

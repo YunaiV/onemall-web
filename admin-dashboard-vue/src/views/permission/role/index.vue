@@ -32,7 +32,7 @@
         <template slot-scope="scope">
           <el-button
             v-if="scope.row.type === RoleTypeEnum.CUSTOM"
-						v-permission="['system:role:update']"
+            v-permission="['system:role:update']"
             type="text"
             size="mini"
             icon="el-icon-edit"
@@ -41,7 +41,7 @@
           <el-button v-permission="['system:role:delete']" type="text" size="mini" icon="el-icon-circle-check" @click="handleAssignRoleResourceClick(scope.row)">分配权限</el-button>
           <el-button
             v-if="scope.row.type === RoleTypeEnum.CUSTOM"
-						v-permission="['system:role:delete']"
+            v-permission="['system:role:delete']"
             type="text"
             size="mini"
             icon="el-icon-delete"
@@ -109,9 +109,9 @@
                 show-checkbox
                 node-key="id"
                 empty-text="加载权限中..."
-								:props="assignRoleResourceFormResourceTreeProps"
-								:check-strictly="assignRoleResourceFormResourceTreeCheckStrictly"
-							/>
+                :props="assignRoleResourceFormResourceTreeProps"
+                :check-strictly="assignRoleResourceFormResourceTreeCheckStrictly"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -182,7 +182,7 @@ export default {
 			  'label': 'name',
         'children': 'children'
       },
-			// 在显示复选框的情况下，是否严格的遵循父子不互相关联的做法
+      // 在显示复选框的情况下，是否严格的遵循父子不互相关联的做法
       assignRoleResourceFormResourceTreeCheckStrictly: false,
 
       RoleTypeEnum: RoleTypeEnum
@@ -212,7 +212,7 @@ export default {
       this.roleFormTitle = '添加角色'
       // 重置表单
       this.resetForm('roleForm')
-			this.roleForm = {}
+      this.roleForm = {}
     },
     // 修改弹窗
     handleUpdateClick(row) {
@@ -315,7 +315,7 @@ export default {
         this.assignRoleResourceFormResourceTreeCheckStrictly = true
         // 设置选中
         this.$refs.assignRoleResourceFormResourceTree.setCheckedKeys(response.data)
-				// 设置为非严格，继续使用半选中
+        // 设置为非严格，继续使用半选中
         this.assignRoleResourceFormResourceTreeCheckStrictly = false
       })
     },
@@ -354,7 +354,7 @@ export default {
     },
     // 列表渲染（类型列）
     formatTypeTableColumn(row) {
-      return getDataDictName(DATA_DICT_ENUM_VALE.ROLE_TYPE, row.type);
+      return getDataDictName(DATA_DICT_ENUM_VALE.ROLE_TYPE, row.type)
     }
   }
 }

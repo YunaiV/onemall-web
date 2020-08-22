@@ -34,9 +34,8 @@ export const RoleTypeEnum = {
 export const SystemExceptionLogProcessStatusEnum = {
   INIT: 0, // 未处理
   DONE: 1, // 已处理
-  IGNORE: 2, // 已忽略
+  IGNORE: 2 // 已忽略
 }
-
 
 /**
  * 错误码的类型枚举

@@ -5,11 +5,11 @@
       <el-form-item label="昵称" prop="nickname">
         <el-input v-model="userListQuery.nickname" placeholder="请输入昵称" clearable size="small" style="width: 240px" />
       </el-form-item>
-			<el-form-item label="状态" prop="status">
-				<el-select v-model="userListQuery.status" placeholder="请选择状态" clearable>
-					<el-option v-for="dict in commonStatusDataDicts" :key="dict.value" :label="dict.displayName" :value="dict.value" />
-				</el-select>
-			</el-form-item>
+      <el-form-item label="状态" prop="status">
+        <el-select v-model="userListQuery.status" placeholder="请选择状态" clearable>
+          <el-option v-for="dict in commonStatusDataDicts" :key="dict.value" :label="dict.displayName" :value="dict.value" />
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="userListQueryFormSubmit">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="userListQueryFormReset">重置</el-button>
@@ -36,17 +36,32 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-					<el-button v-permission="['system:admin:update']" type="text" size="mini" icon="el-icon-edit"
-										 @click="handleUpdateClick(scope.row)">修改
-					</el-button>
-					<el-button v-permission="['system:admin:update-status']" v-if="scope.row.status === CommonStatusEnum.ENABLE"
-										 type="text" size="mini" icon="el-icon-video-pause"
-										 @click="handleStatusUpdateClick(scope.row, CommonStatusEnum.DISABLE)">禁用
-					</el-button>
-					<el-button v-permission="['system:admin:update-status']" v-if="scope.row.status === CommonStatusEnum.DISABLE"
-										 type="text" size="mini" icon="el-icon-video-play"
-										 @click="handleStatusUpdateClick(scope.row, CommonStatusEnum.ENABLE)">开启
-					</el-button>
+          <el-button
+            v-permission="['system:admin:update']"
+            type="text"
+            size="mini"
+            icon="el-icon-edit"
+            @click="handleUpdateClick(scope.row)"
+          >修改
+          </el-button>
+          <el-button
+            v-if="scope.row.status === CommonStatusEnum.ENABLE"
+            v-permission="['system:admin:update-status']"
+            type="text"
+            size="mini"
+            icon="el-icon-video-pause"
+            @click="handleStatusUpdateClick(scope.row, CommonStatusEnum.DISABLE)"
+          >禁用
+          </el-button>
+          <el-button
+            v-if="scope.row.status === CommonStatusEnum.DISABLE"
+            v-permission="['system:admin:update-status']"
+            type="text"
+            size="mini"
+            icon="el-icon-video-play"
+            @click="handleStatusUpdateClick(scope.row, CommonStatusEnum.ENABLE)"
+          >开启
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -71,11 +86,11 @@
     >
       <el-form ref="userForm" :model="userForm" :rules="userFormRule" label-width="80px">
         <el-row>
-					<el-col :span="24">
-						<el-form-item label="昵称" prop="nickname">
-							<el-input v-model="userForm.nickname" placeholder="请输入分组" />
-						</el-form-item>
-					</el-col>
+          <el-col :span="24">
+            <el-form-item label="昵称" prop="nickname">
+              <el-input v-model="userForm.nickname" placeholder="请输入分组" />
+            </el-form-item>
+          </el-col>
           <el-col :span="24">
             <el-form-item label="手机" prop="mobile">
               <el-input v-model="userForm.mobile" placeholder="请输入手机号" />
@@ -93,12 +108,12 @@
 </template>
 
 <script>
-import {pageUser, updateUserInfo, updateUserStatus} from '@/api/user/user'
-import {getDataDicts, DATA_DICT_ENUM_VALE, getDataDictName} from '@/utils/dataDict'
+import { pageUser, updateUserInfo, updateUserStatus } from '@/api/user/user'
+import { getDataDicts, DATA_DICT_ENUM_VALE, getDataDictName } from '@/utils/dataDict'
 
 import Pagination from '@/components/Pagination'
 
-import {CommonStatusEnum} from '@/utils/constants'
+import { CommonStatusEnum } from '@/utils/constants'
 
 export default {
   name: 'UserList',

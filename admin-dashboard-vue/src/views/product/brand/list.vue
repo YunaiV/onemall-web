@@ -12,11 +12,11 @@
       <el-table-column prop="name" label="品牌名称" width="200" :show-overflow-tooltip="true" />
       <el-table-column label="图片" align="center" width="200">
         <template slot-scope="scope">
-					<el-image v-if="scope.row.picUrl && scope.row.picUrl.length > 0" :src="scope.row.picUrl"/>
-				</template>
+          <el-image v-if="scope.row.picUrl && scope.row.picUrl.length > 0" :src="scope.row.picUrl" />
+        </template>
       </el-table-column>
-			<el-table-column prop="status" :formatter="formatStatusTableColumn" label="状态" width="50" />
-			<el-table-column label="创建时间" align="center">
+      <el-table-column prop="status" :formatter="formatStatusTableColumn" label="状态" width="50" />
+      <el-table-column label="创建时间" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d}') }}</span>
         </template>
@@ -28,14 +28,14 @@
         </template>
       </el-table-column>
     </el-table>
-		<!-- 商品分类列表的分页 -->
-		<pagination
-				v-show="productBrandListTotal > 0"
-				:total="productBrandListTotal"
-				:page.sync="productBrandListQuery.pageNo"
-				:limit.sync="productBrandListQuery.pageSize"
-				@pagination="getProductBrandList"
-		/>
+    <!-- 商品分类列表的分页 -->
+    <pagination
+      v-show="productBrandListTotal > 0"
+      :total="productBrandListTotal"
+      :page.sync="productBrandListQuery.pageNo"
+      :limit.sync="productBrandListQuery.pageSize"
+      @pagination="getProductBrandList"
+    />
 
     <!-- 商品品牌添加与修改表单 -->
     <el-dialog
@@ -59,19 +59,19 @@
               <el-input v-model="productBrandForm.picUrl" placeholder="请输入图片" />
             </el-form-item>
           </el-col>
-					<el-col :span="24">
-						<el-form-item label="描述" prop="description">
-							<el-input type="textarea" v-model="productBrandForm.description" placeholder="请输入图片" />
-						</el-form-item>
-					</el-col>
-					<el-col :span="24">
-						<el-form-item label="状态" prop="status">
-							<el-radio-group v-model="productBrandForm.status">
-								<el-radio v-for="dict in commonStatusDataDicts" :label="parseInt(dict.value)">{{dict.displayName}}</el-radio>
-							</el-radio-group>
-						</el-form-item>
-					</el-col>
-				</el-row>
+          <el-col :span="24">
+            <el-form-item label="描述" prop="description">
+              <el-input v-model="productBrandForm.description" type="textarea" placeholder="请输入图片" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="状态" prop="status">
+              <el-radio-group v-model="productBrandForm.status">
+                <el-radio v-for="dict in commonStatusDataDicts" :label="parseInt(dict.value)">{{ dict.displayName }}</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="handleFormSubmit">确 定</el-button>
@@ -97,7 +97,7 @@ export default {
     return {
       // 商品品牌树
       productBrandList: [],
-      //商品品牌总数
+      // 商品品牌总数
       productBrandListTotal: 0,
       // 进度条
       productBrandListLoading: true,
@@ -116,9 +116,9 @@ export default {
         name: [
           { required: true, message: '名称不能为空', trigger: 'blur' }
         ],
-				status: [
+        status: [
           { required: true, message: '状态不能为空', trigger: 'blur' }
-				]
+        ]
       },
       // 是否可见
       productBrandFormVisible: false,
@@ -131,7 +131,7 @@ export default {
       // 枚举
       CommonStatusEnum: CommonStatusEnum,
 
-			// 数据字典
+      // 数据字典
       commonStatusDataDicts: getDataDicts(DATA_DICT_ENUM_VALE.COMMON_STATUS)
     }
   },
@@ -147,7 +147,7 @@ export default {
         this.productBrandListLoading = false
         // 设置数据
         this.productBrandList = response.data.list
-				this.productBrandListTotal = response.data.total
+        this.productBrandListTotal = response.data.total
       }).catch(() => {
         // 取消加载中
         this.productBrandListLoading = false
@@ -233,7 +233,7 @@ export default {
     },
     // 列表渲染（状态列）
     formatStatusTableColumn(row) {
-      return getDataDictName(DATA_DICT_ENUM_VALE.COMMON_STATUS, row.status);
+      return getDataDictName(DATA_DICT_ENUM_VALE.COMMON_STATUS, row.status)
     }
   }
 }

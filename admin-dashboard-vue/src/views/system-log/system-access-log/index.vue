@@ -5,14 +5,14 @@
       <el-form-item label="应用名" prop="applicationName">
         <el-input v-model="systemAccessLogListQuery.applicationName" placeholder="请输入应用名" clearable size="small" style="width: 240px" />
       </el-form-item>
-			<el-form-item label="用户类型" prop="userType">
-				<el-select v-model="systemAccessLogListQuery.userType" placeholder="请选择用户类型" clearable>
-					<el-option v-for="dict in userTypeDataDicts" :key="dict.value" :label="dict.displayName" :value="dict.value" />
-				</el-select>
-			</el-form-item>
-			<el-form-item label="用户编号" prop="userId">
-				<el-input v-model="systemAccessLogListQuery.userId" placeholder="请输入用户编号" clearable size="small" style="width: 240px" />
-			</el-form-item>
+      <el-form-item label="用户类型" prop="userType">
+        <el-select v-model="systemAccessLogListQuery.userType" placeholder="请选择用户类型" clearable>
+          <el-option v-for="dict in userTypeDataDicts" :key="dict.value" :label="dict.displayName" :value="dict.value" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="用户编号" prop="userId">
+        <el-input v-model="systemAccessLogListQuery.userId" placeholder="请输入用户编号" clearable size="small" style="width: 240px" />
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="systemAccessLogListQueryFormSubmit">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="systemAccessLogListQueryFormReset">重置</el-button>
@@ -52,59 +52,60 @@
       @pagination="getSystemAccessLogList"
     />
 
-		<!-- 系统访问日志查看表单 -->
-		<el-dialog title="访问日志明细"
-							 :visible.sync="systemAccessLogViewFormVisible"
-							 width="600px"
-							 append-to-body
-		>
-			<el-form ref="systemAccessLogViewForm" :model="systemAccessLogViewForm" label-width="100px">
-				<el-row>
-					<el-col :span="24">
-						<el-form-item label="应用名">{{ systemAccessLogViewForm.applicationName }}</el-form-item>
-					</el-col>
-					<el-col :span="24">
-						<el-form-item label="链路编号">{{ systemAccessLogViewForm.traceId }}</el-form-item>
-					</el-col>
-					<el-col :span="24">
-						<el-form-item label="请求地址">{{ systemAccessLogViewForm.uri }}</el-form-item>
-					</el-col>
-					<el-col :span="24">
-						<el-form-item label="请求方法">{{ systemAccessLogViewForm.method }}</el-form-item>
-					</el-col>
-					<el-col :span="24">
-						<el-form-item label="请求参数">{{ systemAccessLogViewForm.queryString }}</el-form-item>
-					</el-col>
-					<el-col :span="24">
-						<el-form-item label="响应错误码">{{ systemAccessLogViewForm.errorCode }}</el-form-item>
-					</el-col>
-					<el-col :span="24">
-						<el-form-item label="响应提示">{{ systemAccessLogViewForm.errorMessage }}</el-form-item>
-					</el-col>
-					<el-col :span="24">
-						<el-form-item label="开始时间">{{ systemAccessLogViewForm.startTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</el-form-item>
-					</el-col>
-					<el-col :span="24">
-						<el-form-item label="响应时长">{{ systemAccessLogViewForm.responseTime }} 毫秒</el-form-item>
-					</el-col>
-					<el-col :span="24">
-						<el-form-item label="用户编号">{{ systemAccessLogViewForm.userId }}</el-form-item>
-					</el-col>
-					<el-col :span="24">
-						<el-form-item label="用户类型">{{ this.formatUserTypeString(systemAccessLogViewForm.userType) }}</el-form-item>
-					</el-col>
-					<el-col :span="24">
-						<el-form-item label="用户 IP">{{ systemAccessLogViewForm.ip }}</el-form-item>
-					</el-col>
-					<el-col :span="24">
-						<el-form-item label="用户 UserAgent">{{ systemAccessLogViewForm.userAgent }}</el-form-item>
-					</el-col>
-				</el-row>
-			</el-form>
-			<div slot="footer" class="dialog-footer">
-				<el-button @click="systemAccessLogViewFormVisible = false">关 闭</el-button>
-			</div>
-		</el-dialog>
+    <!-- 系统访问日志查看表单 -->
+    <el-dialog
+      title="访问日志明细"
+      :visible.sync="systemAccessLogViewFormVisible"
+      width="600px"
+      append-to-body
+    >
+      <el-form ref="systemAccessLogViewForm" :model="systemAccessLogViewForm" label-width="100px">
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="应用名">{{ systemAccessLogViewForm.applicationName }}</el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="链路编号">{{ systemAccessLogViewForm.traceId }}</el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="请求地址">{{ systemAccessLogViewForm.uri }}</el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="请求方法">{{ systemAccessLogViewForm.method }}</el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="请求参数">{{ systemAccessLogViewForm.queryString }}</el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="响应错误码">{{ systemAccessLogViewForm.errorCode }}</el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="响应提示">{{ systemAccessLogViewForm.errorMessage }}</el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="开始时间">{{ systemAccessLogViewForm.startTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="响应时长">{{ systemAccessLogViewForm.responseTime }} 毫秒</el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="用户编号">{{ systemAccessLogViewForm.userId }}</el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="用户类型">{{ this.formatUserTypeString(systemAccessLogViewForm.userType) }}</el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="用户 IP">{{ systemAccessLogViewForm.ip }}</el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="用户 UserAgent">{{ systemAccessLogViewForm.userAgent }}</el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="systemAccessLogViewFormVisible = false">关 闭</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -130,11 +131,11 @@ export default {
 			  pageNo: 1,
         pageSize: 10,
         userId: undefined,
-				userType: undefined,
-				applicationName: undefined
+        userType: undefined,
+        applicationName: undefined
       },
 
-			// 系统访问日志查看表单
+      // 系统访问日志查看表单
       systemAccessLogViewForm: {},
       // 是否可见
       systemAccessLogViewFormVisible: false,
@@ -178,15 +179,15 @@ export default {
     handleViewClick(row) {
       // 设置可见
       this.systemAccessLogViewFormVisible = true
-			// 设置数据
-			this.systemAccessLogViewForm = row
-		},
+      // 设置数据
+      this.systemAccessLogViewForm = row
+    },
     // 列表渲染（用户类型列）
     formatUserTypeTableColumn(row) {
-      return getDataDictName(DATA_DICT_ENUM_VALE.USER_TYPE, row.userType);
+      return getDataDictName(DATA_DICT_ENUM_VALE.USER_TYPE, row.userType)
     },
     formatUserTypeString(userType) {
-      return getDataDictName(DATA_DICT_ENUM_VALE.USER_TYPE, userType);
+      return getDataDictName(DATA_DICT_ENUM_VALE.USER_TYPE, userType)
     }
   }
 }

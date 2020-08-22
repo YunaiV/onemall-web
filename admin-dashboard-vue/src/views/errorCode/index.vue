@@ -5,12 +5,12 @@
       <el-form-item label="分组" prop="name">
         <el-input v-model="errorCodeListQuery.group" placeholder="请输入分组" clearable size="small" style="width: 240px" />
       </el-form-item>
-			<el-form-item label="错误码" prop="code">
-				<el-input v-model="errorCodeListQuery.code" placeholder="请输入错误码" clearable size="small" style="width: 240px" />
-			</el-form-item>
-			<el-form-item label="错误提示" prop="message">
-				<el-input v-model="errorCodeListQuery.message" placeholder="请输入错误提示" clearable size="small" style="width: 240px" />
-			</el-form-item>
+      <el-form-item label="错误码" prop="code">
+        <el-input v-model="errorCodeListQuery.code" placeholder="请输入错误码" clearable size="small" style="width: 240px" />
+      </el-form-item>
+      <el-form-item label="错误提示" prop="message">
+        <el-input v-model="errorCodeListQuery.message" placeholder="请输入错误提示" clearable size="small" style="width: 240px" />
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="errorCodeListQueryFormSubmit">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="errorCodeListQueryFormReset">重置</el-button>
@@ -38,14 +38,14 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
-						v-permission="['system:role:update']"
+            v-permission="['system:role:update']"
             type="text"
             size="mini"
             icon="el-icon-edit"
             @click="handleUpdateClick(scope.row)"
           >修改</el-button>
           <el-button
-						v-permission="['system:role:delete']"
+            v-permission="['system:role:delete']"
             type="text"
             size="mini"
             icon="el-icon-delete"
@@ -75,26 +75,26 @@
     >
       <el-form ref="errorCodeForm" :model="errorCodeForm" :rules="errorCodeFormRule" label-width="80px">
         <el-row>
-					<el-col :span="24">
-						<el-form-item label="分组" prop="name">
-							<el-input v-model="errorCodeForm.group" placeholder="请输入分组" />
-						</el-form-item>
-					</el-col>
+          <el-col :span="24">
+            <el-form-item label="分组" prop="name">
+              <el-input v-model="errorCodeForm.group" placeholder="请输入分组" />
+            </el-form-item>
+          </el-col>
           <el-col :span="24">
             <el-form-item label="错误码" prop="name">
               <el-input v-model="errorCodeForm.code" placeholder="请输入错误码" />
             </el-form-item>
           </el-col>
-					<el-col :span="24">
-						<el-form-item label="错误提示" prop="name">
-							<el-input v-model="errorCodeForm.message" placeholder="请输入错误码" />
-						</el-form-item>
-					</el-col>
-					<el-col :span="24">
-						<el-form-item label="备注" prop="memo">
-							<el-input v-model="errorCodeForm.memo" placeholder="请输入备注" />
-						</el-form-item>
-					</el-col>
+          <el-col :span="24">
+            <el-form-item label="错误提示" prop="name">
+              <el-input v-model="errorCodeForm.message" placeholder="请输入错误码" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="备注" prop="memo">
+              <el-input v-model="errorCodeForm.memo" placeholder="请输入备注" />
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -131,7 +131,7 @@ export default {
         pageSize: 10,
         name: undefined,
         code: undefined,
-				message: undefined
+        message: undefined
       },
 
       // 错误码添加与修改表单
@@ -182,7 +182,7 @@ export default {
       this.errorCodeFormTitle = '添加错误码'
       // 重置表单
       this.resetForm('errorCodeForm')
-			this.errorCodeForm = {}
+      this.errorCodeForm = {}
     },
     // 修改弹窗
     handleUpdateClick(row) {

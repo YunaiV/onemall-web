@@ -11,8 +11,8 @@
     <el-table v-loading="dataDictTreeLoading" :data="dataDictTree" row-key="id">
       <el-table-column prop="enumValue" label="大类枚举值" width="300" :show-overflow-tooltip="true" />
       <el-table-column prop="value" label="小类数值"width="100" />
-			<el-table-column prop="displayName" label="展示名" width="200" :show-overflow-tooltip="true" />
-			<el-table-column prop="memo" label="备注" width="300" :show-overflow-tooltip="true" />
+      <el-table-column prop="displayName" label="展示名" width="200" :show-overflow-tooltip="true" />
+      <el-table-column prop="memo" label="备注" width="300" :show-overflow-tooltip="true" />
       <el-table-column label="创建时间" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d}') }}</span>
@@ -22,16 +22,28 @@
         <template slot-scope="scope">
           <el-button
             v-if="scope.row.type === 'enumValue'"
-						v-permission="['system:data-dict:create']"
+            v-permission="['system:data-dict:create']"
             type="text"
             size="mini"
             icon="el-icon-plus"
             @click="handleAddClick(scope.row)"
           >新增</el-button>
-          <el-button  v-if="scope.row.type === 'value'" v-permission="['system:data-dict:update']"
-											type="text" size="mini" icon="el-icon-edit" @click="handleUpdateClick(scope.row)">修改</el-button>
-          <el-button v-if="scope.row.type === 'value'" v-permission="['system:data-dict:delete']"
-										 type="text" size="mini" icon="el-icon-delete" @click="handleDeleteClick(scope.row)">删除</el-button>
+          <el-button
+            v-if="scope.row.type === 'value'"
+            v-permission="['system:data-dict:update']"
+            type="text"
+            size="mini"
+            icon="el-icon-edit"
+            @click="handleUpdateClick(scope.row)"
+          >修改</el-button>
+          <el-button
+            v-if="scope.row.type === 'value'"
+            v-permission="['system:data-dict:delete']"
+            type="text"
+            size="mini"
+            icon="el-icon-delete"
+            @click="handleDeleteClick(scope.row)"
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -53,26 +65,26 @@
               <el-input v-model="dataDictForm.enumValue" placeholder="请输入大类枚举值" />
             </el-form-item>
           </el-col>
-					<el-col :span="24">
-						<el-form-item label="小类数值" prop="enumValue">
-							<el-input v-model="dataDictForm.value" placeholder="请输入小类数值" />
-						</el-form-item>
-					</el-col>
-					<el-col :span="24">
-						<el-form-item label="展示名" prop="enumValue">
-							<el-input v-model="dataDictForm.displayName" placeholder="请输入展示名" />
-						</el-form-item>
-					</el-col>
+          <el-col :span="24">
+            <el-form-item label="小类数值" prop="enumValue">
+              <el-input v-model="dataDictForm.value" placeholder="请输入小类数值" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="展示名" prop="enumValue">
+              <el-input v-model="dataDictForm.displayName" placeholder="请输入展示名" />
+            </el-form-item>
+          </el-col>
           <el-col :span="24">
             <el-form-item label="排序" prop="sort">
               <el-input-number v-model="dataDictForm.sort" controls-position="right" />
             </el-form-item>
           </el-col>
-					<el-col :span="24">
-						<el-form-item label="备注" prop="memo">
-							<el-input v-model="dataDictForm.memo" placeholder="请输入备注" />
-						</el-form-item>
-					</el-col>
+          <el-col :span="24">
+            <el-form-item label="备注" prop="memo">
+              <el-input v-model="dataDictForm.memo" placeholder="请输入备注" />
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -116,7 +128,7 @@ export default {
       dataDictFormVisible: false,
       // 标题
       dataDictFormTitle: '',
-      dataDictFormLoading: false,
+      dataDictFormLoading: false
 
       // 枚举
       // DataDictTypeEnum: DataDictTypeEnum
@@ -133,35 +145,35 @@ export default {
         // 取消加载中
         this.dataDictTreeLoading = false
         // 设置数据
-				const dataDictTree = []
-				const dataDictMap = {}
-				response.data.forEach(dataDict => {
+        const dataDictTree = []
+        const dataDictMap = {}
+        response.data.forEach(dataDict => {
 				  // 获得 enumValue 层级
 				  let enumValueObj = dataDictMap[dataDict.enumValue]
-					if (!enumValueObj) {
+          if (!enumValueObj) {
 					  enumValueObj = dataDictMap[dataDict.enumValue] = {
 					    id: 'enumValue-' + dataDict.id,
 					    type: 'enumValue',
-							enumValue: dataDict.enumValue,
-							children: [],
+              enumValue: dataDict.enumValue,
+              children: [],
               // meta 字段，元数据，方便后续更新
               meta: dataDict
-						}
+            }
             dataDictTree.push(enumValueObj)
-					}
-					// 处理 value 层级
+          }
+          // 处理 value 层级
           enumValueObj.children.push({
             id: 'value-' + dataDict.id,
             type: 'value',
-						value: dataDict.value,
-						displayName: dataDict.displayName,
-						memo: dataDict.memo,
-						createTime: dataDict.createTime,
-						// meta 字段，元数据，方便后续更新
-						meta: dataDict
-					})
-				})
-				this.dataDictTree = dataDictTree
+            value: dataDict.value,
+            displayName: dataDict.displayName,
+            memo: dataDict.memo,
+            createTime: dataDict.createTime,
+            // meta 字段，元数据，方便后续更新
+            meta: dataDict
+          })
+        })
+        this.dataDictTree = dataDictTree
       }).catch(() => {
         // 取消加载中
         this.dataDictTreeLoading = false

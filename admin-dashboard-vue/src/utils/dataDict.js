@@ -32,7 +32,7 @@ export function getDataDictName(enumValue, value) {
     return ''
   }
   // 获取 value 对应的展示名
-  value = value + ''; // 强制转换成字符串，因为 DataDict 小类数值，是字符串
+  value = value + '' // 强制转换成字符串，因为 DataDict 小类数值，是字符串
   for (const dataDict of dataDicts) {
     if (dataDict.value === value) {
       return dataDict.displayName
