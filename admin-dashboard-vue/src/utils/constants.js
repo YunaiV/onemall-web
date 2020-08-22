@@ -79,3 +79,11 @@ export const CouponTemplateStatusEnum = {
   ENABLE: 1, // 生效中
   DISABLE: 2, // 已失效
 }
+
+/**
+ * 优惠劵（码）模板的类型的枚举
+ */
+export const CouponTemplateTypeEnum = {
+  CARD: 1, // 优惠劵
+  CODE: 2, // 折扣卷
+}
