@@ -24,7 +24,7 @@ export function getProductRecommendList() {
 
 export function getCouponTemplate(id) {
   return request({
-    url: '/promotion-api/users/coupon/template/get',
+    url: '/shop-api/promotion/coupon-template/get',
     method: 'get',
     params: {
       id,
@@ -34,10 +34,10 @@ export function getCouponTemplate(id) {
 
 export function doAddCouponCard(templateId) {
   return request({
-    url: '/promotion-api/users/coupon/card/add',
+    url: '/shop-api/promotion/coupon-card/create',
     method: 'post',
     params: {
-      templateId,
+      couponTemplateId: templateId,
     }
   });
 }
@@ -47,7 +47,7 @@ export function doAddCouponCard(templateId) {
 
 export function getCouponPage(status, pageNo, pageSize) {
   return request({
-    url: '/promotion-api/users/coupon/card/page',
+    url: '/shop-api/promotion/coupon-card/page',
     method: 'get',
     params: {
       status,
