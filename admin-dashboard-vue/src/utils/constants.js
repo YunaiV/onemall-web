@@ -114,3 +114,11 @@ export const PromotionActivityStatusEnum = {
   INVALID: 40, // 已撤销
   DELETED: 50, // 已删除
 }
+
+/**
+ * 商品推荐类型枚举
+ */
+export const ProductRecommendTypeEnum = {
+  HOT: 1, // 热卖推荐
+  NEW: 2 // 新品推荐
+}

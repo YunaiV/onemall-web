@@ -18,6 +18,7 @@ export const DATA_DICT_ENUM_VALE = {
   COUPON_TEMPLATE_DATE_TYPE: 'coupon_template_date_type',
   COUPON_TEMPLATE_STATUS: 'coupon_template_status',
   MEET_TYPE: 'meet_type',
+  PRODUCT_RECOMMEND_TYPE: 'product_recommend_type'
 }
 
 /**
