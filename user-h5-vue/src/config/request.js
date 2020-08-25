@@ -16,14 +16,6 @@ const serviceRouter = function(requestUrl) {
         prefix: '/user-api',
         target: 'http://127.0.0.1:18082/user-api',
       },
-      '/product-api': {
-        prefix: '/product-api',
-        target: 'http://127.0.0.1:18081/product-api',
-      },
-      '/promotion-api': {
-        prefix: '/promotion-api',
-        target: 'http://127.0.0.1:18085/promotion-api',
-      },
       '/pay-api': {
         prefix: '/pay-api',
         target: 'http://127.0.0.1:18084/pay-api',
@@ -31,27 +23,15 @@ const serviceRouter = function(requestUrl) {
     };
 
     const configProd = {
-      '/order-api': {
-        prefix: '/order-api',
-        target: 'http://api.shop.iocoder.cn/order-api',
-      },
-      '/user-api': {
+      '/shop-api': {
         prefix: '/user-api',
         target: 'http://api.shop.iocoder.cn/user-api',
       },
-      '/product-api': {
-        prefix: '/product-api',
-        target: 'http://api.shop.iocoder.cn/product-api',
-      },
-      '/promotion-api': {
-        prefix: '/promotion-api',
-        target: 'http://api.shop.iocoder.cn/promotion-api',
-      },
-      '/pay-api': {
+      '/useer-api': {
         prefix: '/pay-api',
         target: 'http://api.shop.iocoder.cn/pay-api',
       },
-      '/search-api': {
+      '/pay-api': {
         prefix: '/search-api',
         target: 'http://api.shop.iocoder.cn/search-api',
       },

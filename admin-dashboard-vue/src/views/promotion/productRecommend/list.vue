@@ -84,7 +84,7 @@
 <script>
 import { pageProductRecommend, createProductRecommend, updateProductRecommend, deleteProductRecommend } from '@/api/promotion/productRecommend'
 
-import { CommonStatusEnum, PRODUCT_RECOMMEND_TYPE } from '@/utils/constants'
+import { CommonStatusEnum } from '@/utils/constants'
 
 import { getDataDictName, getDataDicts, DATA_DICT_ENUM_VALE } from '@/utils/dataDict'
 
@@ -223,7 +223,7 @@ export default {
     },
     // 删除弹窗
     handleDeleteClick(row) {
-      this.$confirm('确认删除名字为"' + row.title + '"的商品推荐?', '提示', {
+      this.$confirm('确认删除名字为"' + row.spu.name + '"的商品推荐?', '提示', {
         type: 'warning',
         confirmButtonText: '确定',
         cancelButtonText: '取消'
