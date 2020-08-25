@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {baseUrl, dataSources} from './env';
+import {dataSources} from './env';
 import datas from '../data/data';
 import { getAccessToken, getRefreshToken } from '../utils/cache.js';
 import { Dialog } from 'vant';
@@ -27,7 +27,7 @@ const serviceRouter = function(requestUrl) {
         prefix: '/user-api',
         target: 'http://api.shop.iocoder.cn/user-api',
       },
-      '/useer-api': {
+      '/user-api': {
         prefix: '/pay-api',
         target: 'http://api.shop.iocoder.cn/pay-api',
       },
@@ -92,7 +92,7 @@ const service = axios.create({
 
 const servicef = function (parameter) {
   // debugger;
-  if (dataSources == 'local') {
+  if (dataSources === 'local') {
     //定义回调函数和axios一致
     const promist = new Promise(function (resolve, reject) {
       var data = datas[parameter.url];
