@@ -4,16 +4,9 @@
       <div>
           <div style="padding-top: 70px;">
             <van-cell-group>
-                <van-field
-                    placeholder="请输入手机号"
-                    @input="inputMobile"
-                />
-                 <van-field
-                    center
-                    placeholder="请输入短信验证码"
-                    @input="inputCode"
-                >
-                    <van-button slot="button" size="small" type="primary" @click="sendCode">发送验证码</van-button>
+                <van-field placeholder="请输入手机号" @input="inputMobile"/>
+							  <van-field center placeholder="请输入短信验证码" @input="inputCode">
+									<van-button slot="button" size="small" type="primary" @click="sendCode">发送验证码</van-button>
                 </van-field>
             </van-cell-group>
             <div style="margin: 10px;">
@@ -25,7 +18,18 @@
               </van-panel>
           </div>
       </div>
-    </div>
+
+			<van-popup v-model="humanIdentificationVisible">
+				<van-cell-group>
+					<van-cell>人机识别</van-cell>
+					<van-cell>扫码下方二维码，回复【前台】</van-cell>
+					<img src="http://static.iocoder.cn/images/common/erweima/javajj.png" height="100%" width="100%" >
+					<van-field left-icon="smile-o" label="验证码" center placeholder="请输入验证码" @input="inputHumanIdentificationFormCode">
+						<van-button slot="button" size="small" type="primary" @click="handleHumanIdentificationFormSubmit">确认</van-button>
+					</van-field>
+				</van-cell-group>
+			</van-popup>
+		</div>
 </template>
 
 <script>
@@ -39,6 +43,12 @@ export default {
     return {
       mobile: '',
       code: '',
+
+			// 人机识别
+      humanIdentificationVisible: false,
+      humanIdentificationForm: {
+        code: undefined
+      }
     }
   },
 
@@ -66,6 +76,12 @@ export default {
       });
     },
     submit: function () {
+      // 人机识别逻辑，第一个版本
+      if (localStorage.getItem('human') !== 'true') {
+        this.humanIdentificationVisible = true
+        return
+      }
+      // 表单提交
       let that = this;
       let response = passportLoginBySms(this.mobile, this.code);
       response.then(data => {
@@ -81,7 +97,22 @@ export default {
           }
         });
       });
-    }
+    },
+    inputHumanIdentificationFormCode: function (value) {
+      this.humanIdentificationForm.code = value;
+    },
+    // 表单提交
+    handleHumanIdentificationFormSubmit() {
+      // 关闭表单
+      this.humanIdentificationVisible = true
+      // 验证 code 码
+      if (this.humanIdentificationForm.code !== 'yutou') {
+        alert('验证码不正确')
+        return
+      }
+      localStorage.setItem('human', 'true')
+      this.humanIdentificationVisible = false
+    },
   }
 
 }

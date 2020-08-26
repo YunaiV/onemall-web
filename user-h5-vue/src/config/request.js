@@ -25,15 +25,15 @@ const serviceRouter = function(requestUrl) {
     const configStage = {
       '/shop-api': {
         prefix: '/user-api',
-        target: 'http://dev-api-h5.shop.iocoder.cn/user-api',
+        target: 'http://api-h5.shop.iocoder.cn/user-api',
       },
       '/user-api': {
         prefix: '/pay-api',
-        target: 'http://dev-api-h5.shop.iocoder.cn/pay-api',
+        target: 'http://api-h5.shop.iocoder.cn/pay-api',
       },
       '/pay-api': {
         prefix: '/search-api',
-        target: 'http://dev-api-h5.shop.iocoder.cn/search-api',
+        target: 'http://api-h5.shop.iocoder.cn/search-api',
       },
     };
 
