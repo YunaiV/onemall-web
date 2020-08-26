@@ -24,31 +24,31 @@ const serviceRouter = function(requestUrl) {
 
     const configStage = {
       '/shop-api': {
+        prefix: '/shop-api',
+        target: 'http://api-h5.shop.iocoder.cn/shop-api',
+      },
+      '/user-api': {
         prefix: '/user-api',
         target: 'http://api-h5.shop.iocoder.cn/user-api',
       },
-      '/user-api': {
+      '/pay-api': {
         prefix: '/pay-api',
         target: 'http://api-h5.shop.iocoder.cn/pay-api',
-      },
-      '/pay-api': {
-        prefix: '/search-api',
-        target: 'http://api-h5.shop.iocoder.cn/search-api',
       },
     };
 
     const configProd = {
       '/shop-api': {
+        prefix: '/shop-api',
+        target: 'http://api-h5.shop.iocoder.cn/shop-api',
+      },
+      '/user-api': {
         prefix: '/user-api',
         target: 'http://api-h5.shop.iocoder.cn/user-api',
       },
-      '/user-api': {
+      '/pay-api': {
         prefix: '/pay-api',
         target: 'http://api-h5.shop.iocoder.cn/pay-api',
-      },
-      '/pay-api': {
-        prefix: '/search-api',
-        target: 'http://api-h5.shop.iocoder.cn/search-api',
       },
     };
 
