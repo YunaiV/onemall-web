@@ -53,8 +53,16 @@ service.interceptors.response.use(
         duration: 5 * 1000
       })
 
+
+
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+      if (res.code === 1001001001 // 访问令牌不存在
+        || res.code === 1001001003 // 访问令牌已失效
+        || res.code === 1001001005 // 刷新令牌不存在
+        || res.code === 1001001006 // 刷新令牌已过期
+        || res.code === 1001001007 // 刷新令牌已失效
+        || res.code === 1001001002 // 访问令牌已过期 // TODO 芋艿：现在暂时未完成 refresh token 刷新逻辑
+        ) {
         // to re-login
         MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
           confirmButtonText: 'Re-Login',

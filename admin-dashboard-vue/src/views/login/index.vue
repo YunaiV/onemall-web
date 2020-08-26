@@ -70,11 +70,43 @@
       <br>
       <social-sign />
     </el-dialog>
+
+		<!-- 人机识别逻辑 -->
+		<el-dialog v-loading="humanIdentificationLoading" title="人机识别" :visible.sync="humanIdentificationVisible" width="600px"
+				append-to-body
+				element-loading-text="提交中..."
+				element-loading-spinner="el-icon-loading"
+		>
+			<el-form ref="bannerForm" :model="humanIdentificationForm" :rules="humanIdentificationRule" label-width="80px">
+				<el-row>
+					<el-col style="text-align: center" :span="24">
+						<el-link type="danger">扫码下方二维码，回复【后台】</el-link>
+					</el-col>
+				</el-row>
+				<el-row>
+					<el-col style="text-align: center" :span="24">
+						<el-image src="http://static.iocoder.cn/images/common/erweima.jpg"></el-image>
+					</el-col>
+				</el-row>
+				<el-row>
+					<el-col :span="24">
+						<el-form-item label="验证码" prop="code">
+							<el-input v-model="humanIdentificationForm.code" placeholder="请输入验证码" />
+						</el-form-item>
+					</el-col>
+				</el-row>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button type="primary" @click="handleHumanIdentificationFormSubmit">确 定</el-button>
+				<el-button @click="handleHumanIdentificationFormCancel">取 消</el-button>
+			</div>
+		</el-dialog>
   </div>
 </template>
 
 <script>
 import SocialSign from './components/SocialSignin'
+import Cookies from 'js-cookie'
 
 export default {
   name: 'Login',
@@ -101,7 +133,17 @@ export default {
       loading: false,
       showDialog: false,
       redirect: undefined,
-      otherQuery: {}
+      otherQuery: {},
+
+			// 人机识别
+      humanIdentificationVisible: false,
+      humanIdentificationForm: {
+        code: undefined
+			},
+      humanIdentificationRule: {
+        code: [{ required: true, message: '验证码不能为空', trigger: 'blur' }]
+			},
+      humanIdentificationLoading: false
     }
   },
   watch: {
@@ -145,6 +187,12 @@ export default {
       })
     },
     handleLogin() {
+      // 人机识别逻辑，第一个版本
+			if (Cookies.get('human') !== 'true') {
+        this.humanIdentificationVisible = true
+			  return
+			}
+      // 表单校验
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
@@ -169,7 +217,23 @@ export default {
         }
         return acc
       }, {})
-    }
+    },
+    // 表单提交
+    handleHumanIdentificationFormSubmit() {
+      // 关闭表单
+      this.humanIdentificationVisible = true
+			// 验证 code 码
+			if (this.humanIdentificationForm.code !== 'yunai') {
+			  alert('验证码不正确')
+				return
+			}
+      Cookies.set('human', 'true')
+      this.humanIdentificationVisible = false
+    },
+    // 表单取消
+    handleHumanIdentificationFormCancel() {
+      this.humanIdentificationVisible = false
+    },
     // afterQRScan() {
     //   if (e.key === 'x-admin-oauth-code') {
     //     const code = getQueryObject(e.newValue)

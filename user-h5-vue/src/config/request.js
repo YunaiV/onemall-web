@@ -22,23 +22,40 @@ const serviceRouter = function(requestUrl) {
       }
     };
 
-    const configProd = {
+    const configStage = {
       '/shop-api': {
         prefix: '/user-api',
-        target: 'http://api.shop.iocoder.cn/user-api',
+        target: 'http://dev-api-h5.shop.iocoder.cn/user-api',
       },
       '/user-api': {
         prefix: '/pay-api',
-        target: 'http://api.shop.iocoder.cn/pay-api',
+        target: 'http://dev-api-h5.shop.iocoder.cn/pay-api',
       },
       '/pay-api': {
         prefix: '/search-api',
-        target: 'http://api.shop.iocoder.cn/search-api',
+        target: 'http://dev-api-h5.shop.iocoder.cn/search-api',
       },
     };
 
-    if (process.env.NODE_ENV == 'development') {
+    const configProd = {
+      '/shop-api': {
+        prefix: '/user-api',
+        target: 'http://api-h5.shop.iocoder.cn/user-api',
+      },
+      '/user-api': {
+        prefix: '/pay-api',
+        target: 'http://api-h5.shop.iocoder.cn/pay-api',
+      },
+      '/pay-api': {
+        prefix: '/search-api',
+        target: 'http://api-h5.shop.iocoder.cn/search-api',
+      },
+    };
+
+    if (process.env.NODE_ENV === 'development') {
       return configDev;
+    } else if (process.env.NODE_ENV === 'staging') {
+      return configStage;
     } else {
       return configProd
     }
@@ -130,9 +147,9 @@ service.interceptors.request.use(
     const { target, prefix } = serviceRouter(config.url)
     let url = config.url = config.url.replace(`${prefix}`, target);
     // TODO 芋艿，这些 url 不用增加认证 token 。可能这么写，有点脏，后面看看咋优化下。
-    if (url.indexOf('user-api/users/passport/mobile/send_register_code') !== -1
-      || url.indexOf('user-api/users/passport/mobile/register') !== -1
-      || url.indexOf('user-api/users/passport/refresh_token') !== -1) {
+    if (url.indexOf('user-api/passport/login-by-sms') !== -1
+      || url.indexOf('user-api/passport/send-sms-code') !== -1
+      || url.indexOf('user-api/passport/refresh-token') !== -1) {
       return config;
     }
 
@@ -153,13 +170,15 @@ function refreshToken(lastResponse) {
   // TODO 芋艿，可能会存在多个异步 callback 的情况。
   let refreshToken = getRefreshToken();
   return servicef({
-    url: '/user-api/users/passport/refresh_token',
+    url: '/user-api/passport/refresh-token',
     method: 'post',
     params: {
       refreshToken
     }
   }).then(data => {
     // 设置新的 accessToken
+    // TODO 芋艿 可能会存在刷新令牌也是过期的；
+    // debugger
     setLoginToken(data.accessToken, data.refreshToken);
     // 重新发起请求
     let config = lastResponse.config;
@@ -205,11 +224,11 @@ service.interceptors.response.use(
 
       // TODO token 过期
       // TODO 需要拿 refresh token 置换
-      if (code === 1002001011 // 访问令牌不存在
-        || code === 1002001013 // 访问令牌已失效
-        || code === 1002001017 // 刷新令牌不存在
-        || code === 1002001018 // 刷新令牌已过期
-        || code === 1002001019) {  // 刷新令牌已失效
+      if (code === 1001001001 // 访问令牌不存在
+        || code === 1001001003 // 访问令牌已失效
+        || code === 1001001005 // 刷新令牌不存在
+        || code === 1001001006 // 刷新令牌已过期
+        || code === 1001001007) {  // 刷新令牌已失效
         Dialog.confirm({
           title: '系统提示',
           message: res.message,
@@ -225,7 +244,7 @@ service.interceptors.response.use(
             }
           }
         });
-      } else if (code === 1002001012) { // 访问令牌已过期
+      } else if (code === 1001001002) { // 访问令牌已过期
         return refreshToken(response);
       } else {
         Dialog.alert({
