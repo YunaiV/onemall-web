@@ -7,7 +7,7 @@ export function createOrder(params) {
     headers: {
       'Content-Type': 'application/json',
     },
-    url: '/order-api/users/order/create_order',
+    url: '/shop-api/trade-order/create',
     method: 'post',
     data: {
       ...params,
@@ -17,7 +17,7 @@ export function createOrder(params) {
 
 export function getOrderPage(params) {
   return request({
-    url: '/order-api/users/order/order_page',
+    url: '/shop-api/trade-order/page',
     method: 'get',
     params: {
       ...params,
@@ -37,7 +37,7 @@ export function confirmReceiving(orderId) {
 
 export function getOrderConfirmCreateOrder(skuId, quantity, couponCardId) {
   return request({
-    url: '/order-api/users/order/confirm_create_order',
+    url: '/shop-api/trade-order/confirm-create-order-info',
     method: 'get',
     params: {
       skuId,
@@ -47,12 +47,12 @@ export function getOrderConfirmCreateOrder(skuId, quantity, couponCardId) {
   });
 }
 
-export function getOrderInfo(orderId) {
+export function getOrderInfo(tradeOrderId) {
   return request({
-    url: '/order-api/users/order/info',
+    url: '/shop-api/trade-order/get',
     method: 'get',
     params: {
-      orderId,
+      tradeOrderId,
     }
   });
 }

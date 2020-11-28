@@ -168,13 +168,15 @@
             const orderItems = [{
               skuId,
               quantity,
-              couponCardId,
             }];
             createOrder({
-              orderItems,
               userAddressId,
               couponCardId,
               remark,
+              orderItems
+							// 'orderItems[0].skuId': skuId,
+							// 'orderItems[0].quantity': quantity,
+							// 'orderItems[0].couponCardId': couponCardId
             }).then(result => {
               if (result) {
                 // const { orderNo } = result;
@@ -184,7 +186,7 @@
                 //     ...result,
                 //   }
                 // });
-                this.$router.push('/pay?appId=POd4RC6a&orderId=' + result.id + '&returnUrl=' + encodeURI('/user/order/info/' + result.id));
+                this.$router.push('/pay?appId=POd4RC6a&orderId=' + result + '&returnUrl=' + encodeURI('/user/order/info/' + result));
               }
             });
         } else if (this.from === 'cart') {
@@ -197,7 +199,7 @@
               //     ...result,
               //   }
               // });
-              this.$router.push('/pay?appId=POd4RC6a&orderId=' + result.id + '&returnUrl=' + encodeURI('/user/order/info/' + result.id));
+              this.$router.push('/pay?appId=POd4RC6a&orderId=' + result + '&returnUrl=' + encodeURI('/user/order/info/' + result));
             }
           });
         }

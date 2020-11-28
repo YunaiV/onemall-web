@@ -6,7 +6,7 @@
       <van-step>配送中</van-step>
       <van-step>交易完成</van-step>
     </van-steps>
-    <van-cell v-if="orderInfo.status >= 2 "
+    <van-cell v-if="orderInfo.orderStatus >= 2 "
               class="logistics"
               :to="`/user/order/logistics/${orderInfo.id}`"
               :title="latestLogisticsDetail.logisticsInformation"
@@ -21,8 +21,8 @@
         :border="false"
       >
         <template>
-          <div>{{recipient.name}} {{recipient.mobile}}</div>
-          <div>{{recipient.address}}</div>
+          <div>{{orderInfo.receiverName}} {{orderInfo.receiverMobile}}</div>
+          <div>{{orderInfo.receiverDetailAddress}}</div>
         </template>
       </van-cell>
     </van-cell-group>
@@ -52,8 +52,8 @@
         <router-link v-if="orderInfo.hasOrderReturn !== -1" :to="'/user/aftersale/detail/'+orderId">
           <van-button size="small">查看进度</van-button>
         </router-link>
-        <van-button v-if="orderInfo.status === 3 " size="small" v-on:click="clickConfirmReceiving(orderId)">确认收货</van-button>
-        <van-button v-if="orderInfo.status === 1 " size="small" type="danger" @click="goPay(orderInfo.id)">支付</van-button>
+        <van-button v-if="orderInfo.orderStatus === 30 " size="small" v-on:click="clickConfirmReceiving(orderId)">确认收货</van-button>
+        <van-button v-if="orderInfo.orderStatus === 10 " size="small" type="danger" @click="goPay(orderInfo.id)">支付</van-button>
       </div>
     </div>
   </div>
@@ -96,24 +96,23 @@
       const { id } = this.$route.params;
       this.orderId = id;
       getOrderInfo(id).then(res => {
-        const { status, recipient, latestLogisticsDetail, orderItems} = res;
+        const { orderStatus, latestLogisticsDetail, orderItems} = res;
         // 提交订单、配送中、交易成功
-        if ([1, 2].indexOf(status) !== -1) {
+        if ([1, 2].indexOf(orderStatus) !== -1) {
           this.active = 0
-        } else if (status === 3) {
+        } else if (orderStatus === 3) {
           this.active = 1
-        } else if (status >= 4) {
+        } else if (orderStatus >= 4) {
           this.active = 2
         }
-
-        // 收件人信息
-        this.recipient = recipient;
 
         // 订单info
         this.orderInfo = {
           ...res,
           createTimeText: moment(res.createTime).format("YYYY-MM-DD HH:mm"),
         };
+
+        console.log(this.orderInfo)
 
         // 最新物流信息
         let logisticsTimeText = '';
