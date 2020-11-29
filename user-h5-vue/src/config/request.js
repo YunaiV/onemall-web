@@ -12,10 +12,6 @@ const serviceRouter = function(requestUrl) {
         prefix: '/shop-api',
         target: 'http://127.0.0.1:18084/shop-api',
       },
-      '/user-api': {
-        prefix: '/user-api',
-        target: 'http://127.0.0.1:18082/user-api',
-      },
       '/pay-api': {
         prefix: '/pay-api',
         target: 'http://127.0.0.1:18084/pay-api',
@@ -27,10 +23,6 @@ const serviceRouter = function(requestUrl) {
         prefix: '/shop-api',
         target: 'http://api-h5.shop.iocoder.cn/shop-api',
       },
-      '/user-api': {
-        prefix: '/user-api',
-        target: 'http://api-h5.shop.iocoder.cn/user-api',
-      },
       '/pay-api': {
         prefix: '/pay-api',
         target: 'http://api-h5.shop.iocoder.cn/pay-api',
@@ -41,10 +33,6 @@ const serviceRouter = function(requestUrl) {
       '/shop-api': {
         prefix: '/shop-api',
         target: 'http://api-h5.shop.iocoder.cn/shop-api',
-      },
-      '/user-api': {
-        prefix: '/user-api',
-        target: 'http://api-h5.shop.iocoder.cn/user-api',
       },
       '/pay-api': {
         prefix: '/pay-api',
@@ -147,9 +135,9 @@ service.interceptors.request.use(
     const { target, prefix } = serviceRouter(config.url)
     let url = config.url = config.url.replace(`${prefix}`, target);
     // TODO 芋艿，这些 url 不用增加认证 token 。可能这么写，有点脏，后面看看咋优化下。
-    if (url.indexOf('user-api/passport/login-by-sms') !== -1
-      || url.indexOf('user-api/passport/send-sms-code') !== -1
-      || url.indexOf('user-api/passport/refresh-token') !== -1) {
+    if (url.indexOf('shop-api/passport/login-by-sms') !== -1
+      || url.indexOf('shop-api/passport/send-sms-code') !== -1
+      || url.indexOf('shop-api/passport/refresh-token') !== -1) {
       return config;
     }
 
@@ -170,7 +158,7 @@ function refreshToken(lastResponse) {
   // TODO 芋艿，可能会存在多个异步 callback 的情况。
   let refreshToken = getRefreshToken();
   return servicef({
-    url: '/user-api/passport/refresh-token',
+    url: '/shop-api/passport/refresh-token',
     method: 'post',
     params: {
       refreshToken
