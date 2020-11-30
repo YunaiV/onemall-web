@@ -123,10 +123,10 @@ export function getCartConfirmCreateOrder(couponCardId) {
 
 export function getCartCalcSkuPrice(skuId) {
   return request({
-    url: '/order-api/users/cart/calc_sku_price',
+    url: '/shop-api/product-sku/cal-price',
     method: 'get',
     params: {
-      skuId,
+      'id': skuId,
     }
   });
 }
